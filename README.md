@@ -16,11 +16,11 @@ Calvin Lee, @stalk.calvin
 
 See dependancies list from here
 
-Dependancies are listed in the [requirements.txt](https://github.com/stalk-calvin/Python-Algorithms/blob/master/requirements.txt) file. See dependancies tag.
+Dependancies are listed in the [requirements.txt](https://github.com/stalk-calvin/Python-Algorithms/blob/master/requirements.txt) file.
 
 ## License
 
-Licensed with no license. I do not care how you publish as long as my copyright is in place.
+Copyleft aka open but please leave my copyright comments alone.
 
 ## Installation
 
