@@ -1,4 +1,4 @@
-# Calvin's "Playground" Project
+# Calvin's "Playground" Project [![CI](https://api.travis-ci.org/stalk-calvin/Python-Algorithms.svg?branch=master)](https://travis-ci.org/stalk-calvin/Python-Algorithms)
 
 Library of algorithms and data structures implemented in Python. Main purpose is educational
 This is where I play and learn different kind of algorithms, data structures, concepts, techniques, etc. Anything related to Programming. Most of the problems included are basics for now which I personally find important. I plan to continue contributing more problems here for the future.
@@ -15,7 +15,7 @@ Calvin Lee, @stalk.calvin
 
 See dependancies list from here
 
-Dependancies are listed in the [pom.xml](https://github.com/stalk-calvin/Java-Algorithms/blob/master/pom.xml) file. See dependancies tag.
+Dependancies are listed in the [requirements.txt](https://github.com/stalk-calvin/Python-Algorithms/blob/master/requirements.txt) file. See dependancies tag.
 
 ## License
 
@@ -24,13 +24,16 @@ Licensed with no license. I do not care how you publish as long as my copyright 
 ## Installation
 
 ```
- $ pip install algorithms
+ $ Clone this repo and cd into the directory
+ $ sudo pip install -r requirements.txt .
 ```
 
 ## Tests:
 
-Pytest is used as the main test runner and all Unit Tests can be run with:
+All Unit Tests can be run with:
 
 ```
  $ ./run_tests.py
 ```
+
+CI determines using the same script run.
