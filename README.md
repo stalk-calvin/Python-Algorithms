@@ -1,7 +1,6 @@
 # Calvin's "Playground" Project [![CI](https://api.travis-ci.org/stalk-calvin/Python-Algorithms.svg?branch=master)](https://travis-ci.org/stalk-calvin/Python-Algorithms)
 
-Library of algorithms and data structures implemented in Python. Main purpose is educational
-This is where I play and learn different kind of algorithms, data structures, concepts, techniques, etc. Anything related to Programming. Most of the problems included are basics for now which I personally find important. I plan to continue contributing more problems here for the future.
+Library of algorithms and data structures implemented in Python language. I created this repository for educational purpose, mainly for myself. This is where I play and learn different kind of algorithms, data structures, concepts, techniques, etc in Python. Most of the problems included are basics for now which I personally find them important. I plan to continue contributing more problems here in the future.
  
 ## Contributors
 
