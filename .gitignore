@@ -1,0 +1,25 @@
+*.prefs
+*.swp
+*~
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Install Stuffs
+MYMETA.json
+MYMETA.yml
+Makefile
+blib/
+pm_to_blib
+algo_venv/
+
+# Python
+*.pyc
+/*.egg-info
+*.ropeproject/
+docs/_build
