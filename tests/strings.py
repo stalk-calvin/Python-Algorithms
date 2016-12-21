@@ -23,5 +23,10 @@ class StringsTest(unittest.TestCase):
         expected = "dcba"
         self.assertEquals(expected, actual)
 
+    def test_first_uniq_string(self):
+        input = "eelvinlee"
+        actual = self.fixture.firstUniqChar(input)
+        self.assertEquals(3, actual)
+
     def tearDown(self):
         del self.fixture

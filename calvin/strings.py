@@ -1,3 +1,5 @@
+import string
+
 class Strings(object):
     """
     Implementation on String Manipulation
@@ -19,3 +21,6 @@ class Strings(object):
         :rtype: str
         """
         return s[::-1]
+
+    def firstUniqChar(self, s):
+        return min([s.find(c) for c in string.ascii_lowercase if s.count(c) == 1] or [-1])
