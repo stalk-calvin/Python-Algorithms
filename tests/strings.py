@@ -28,5 +28,10 @@ class StringsTest(unittest.TestCase):
         actual = self.fixture.firstUniqChar(input)
         self.assertEquals(3, actual)
 
+    def test_is_isomorphic(self):
+        self.assertTrue(self.fixture.isIsomorphic("paper", "title"))
+        self.assertTrue(self.fixture.isIsomorphic("aabbcc", "ddeeff"))
+        self.assertFalse(self.fixture.isIsomorphic("foo", "bar"))
+
     def tearDown(self):
         del self.fixture
