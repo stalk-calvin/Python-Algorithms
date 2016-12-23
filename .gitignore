@@ -23,3 +23,8 @@ algo_venv/
 /*.egg-info
 *.ropeproject/
 docs/_build
+
+# Coverage
+htmlcov
+.coverage
+
