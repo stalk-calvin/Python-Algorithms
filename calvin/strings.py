@@ -52,3 +52,21 @@ class Strings(object):
             tMap[tChar] = sChar
 
         return True
+
+    def longestCommonPrefix(self, s):
+        """
+        :type s: String array
+        :rtype: String
+        """
+        if (not s):
+            return ""
+
+        if (len(s) == 1):
+            return s[0]
+
+        compare = s[0]
+        for i in range(1, len(s)):
+            while (compare not in s[i]):
+                compare = compare[0:len(compare) - 1]
+
+        return compare
