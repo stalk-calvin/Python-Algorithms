@@ -31,9 +31,13 @@ class StringsTest(unittest.TestCase):
     def test_is_isomorphic(self):
         self.assertTrue(self.fixture.isIsomorphic("paper", "title"))
         self.assertTrue(self.fixture.isIsomorphic("aabbcc", "ddeeff"))
+        self.assertFalse(self.fixture.isIsomorphic("bar", "foo"))
         self.assertFalse(self.fixture.isIsomorphic("foo", "bar"))
+        self.assertFalse(self.fixture.isIsomorphic("different", "length"))
 
     def test_longest_common_prefix(self):
+        self.assertEquals("", self.fixture.longestCommonPrefix(None))
+        self.assertEquals("single", self.fixture.longestCommonPrefix(["single"]))
         input = ["jewgfsdasda", "jewgfsjwurf", "jew?ASD"]
         actual = self.fixture.longestCommonPrefix(input)
         self.assertEquals("jew", actual)
