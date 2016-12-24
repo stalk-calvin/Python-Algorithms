@@ -14,7 +14,7 @@ class StringsTest(unittest.TestCase):
     def test_find_the_difference(self):
         s = "abcd"
         t = "abcde"
-        actual = self.fixture.find_the_difference(s, t)
+        actual = self.fixture.findTheDifference(s, t)
         self.assertEquals("e", actual)
 
     def test_reverse_string(self):
@@ -41,6 +41,16 @@ class StringsTest(unittest.TestCase):
         input = ["jewgfsdasda", "jewgfsjwurf", "jew?ASD"]
         actual = self.fixture.longestCommonPrefix(input)
         self.assertEquals("jew", actual)
+
+    def test_reverse_vowels(self):
+        input = "calvin"
+        actual = self.fixture.reverseVowels(input)
+        self.assertEquals("cilvan", actual)
+
+    def test_zig_zag(self):
+        input = "PAYPALISHIRING"
+        actual = self.fixture.zigZag(input, 3)
+        self.assertEquals("PAHNAPLSIIGYIR", actual)
 
     def tearDown(self):
         del self.fixture

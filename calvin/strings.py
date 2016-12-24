@@ -4,7 +4,7 @@ class Strings(object):
     """
     Implementation on String Manipulation
     """
-    def find_the_difference(self, s, t):
+    def findTheDifference(self, s, t):
         """
         :type s: str
         :type t: str
@@ -21,6 +21,28 @@ class Strings(object):
         :rtype: str
         """
         return s[::-1]
+
+    def reverseVowels(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        vowels = "aiueo"
+        i = 0
+        j = len(s) - 1
+        sChars = list(s)
+        while (i < j):
+            if (sChars[i].lower() in vowels and sChars[j].lower() in vowels):
+                tmp = sChars[i]
+                sChars[i] = sChars[j]
+                i += 1
+                sChars[j] = tmp
+                j -= 1
+            elif sChars[j].lower() not in vowels:
+                j -= 1
+            elif sChars[i].lower() not in vowels:
+                i += 1
+        return ''.join(sChars)
 
     def firstUniqChar(self, s):
         """
@@ -70,3 +92,26 @@ class Strings(object):
                 compare = compare[0:len(compare) - 1]
 
         return compare
+
+    def zigZag(self, s, numRows):
+        """
+        :type s: string
+        :type numRows: int
+        :rtype: string
+        """
+        if (numRows <= 1):
+            return s
+        sb = ["" for x in range(numRows)]
+        incre = 1
+        index = 0
+        for i in range(0, len(s)):
+            sb[index] += s[i]
+            if (index == 0):
+                incre = 1
+            if (index == numRows - 1):
+                incre = -1
+            index += incre
+        re = ""
+        for i in range(0, len(sb)):
+            re += sb[i]
+        return re
