@@ -1,13 +1,12 @@
 from __future__ import absolute_import
 
 import unittest
-import time
 
 from calvin.numbers import Numbers
 
-class StringsTest(unittest.TestCase):
+class NumbersTest(unittest.TestCase):
     """
-    Test Strings method
+    Test Numbers method
     """
     def setUp(self):
         self.fixture = Numbers()
