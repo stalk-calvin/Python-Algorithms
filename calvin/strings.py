@@ -133,3 +133,15 @@ class Strings(object):
                 bigcount = count
 
         return [bigword, bigcount]
+
+    def wordList(self, filelocation):
+        handle = open(filelocation, 'r')
+        wordlist = list()
+        for line in handle:
+            words = line.split()
+            for word in words:
+                if word in wordlist: continue
+                wordlist.append(word)
+
+        wordlist.sort()
+        return wordlist
