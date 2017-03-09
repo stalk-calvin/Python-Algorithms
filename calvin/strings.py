@@ -115,3 +115,21 @@ class Strings(object):
         for i in range(0, len(sb)):
             re += sb[i]
         return re
+
+    def wordCount(self, filelocation):
+        handle = open(filelocation, 'r')
+        counts = dict()
+
+        for line in handle:
+            words = line.split()
+            for word in words:
+                counts[word] = counts.get(word, 0) + 1
+
+        bigcount = None
+        bigword = None
+        for word, count in list(counts.items()):
+            if bigcount is None or count > bigcount:
+                bigword = word
+                bigcount = count
+
+        return [bigword, bigcount]

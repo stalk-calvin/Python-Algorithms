@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import unittest
+import os
 
 from calvin.strings import Strings
 
@@ -51,6 +52,12 @@ class StringsTest(unittest.TestCase):
         input = "PAYPALISHIRING"
         actual = self.fixture.zigZag(input, 3)
         self.assertEquals("PAHNAPLSIIGYIR", actual)
+
+    def test_word_count(self):
+        dir = os.path.dirname(__file__)
+        filename = os.path.join(dir, '../data/words.txt')
+        actual = self.fixture.wordCount(filename)
+        self.assertEquals(['to', 16], actual)
 
     def tearDown(self):
         del self.fixture
