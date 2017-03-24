@@ -30,3 +30,20 @@ class Numbers(object):
 
         self.table.append(self.fib3(n - 1) + self.fib3(n - 2));
         return self.table[n]
+
+    def bullsAndCows(self, secret, guess):
+        bulls = 0
+        cows = 0
+        numbers = [0] * 10
+        for x in range(len(secret)):
+            s = int(secret[x])
+            g = int(guess[x])
+            if (s == g):
+                bulls += 1
+            else:
+                if (numbers[s] and numbers[s] < 0): cows += 1
+                if (numbers[g] and numbers[g] > 0): cows += 1
+                numbers[s] += 1
+                numbers[g] -= 1
+
+        return str(bulls) + "A" + str(cows) + "B"
