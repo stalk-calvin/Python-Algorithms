@@ -4,9 +4,33 @@ from random import shuffle
 
 import unittest
 
-from calvin.data_structure import (
-    binary_tree_search
-)
+from calvin.data_structure import binary_tree_search
+from calvin.data_structure.stack import Stack
+
+class TestStack(unittest.TestCase):
+    def setUp(self):
+        self.fixture = Stack()
+        self.assertTrue(self.fixture.isEmpty())
+
+    def testPushVariousTypes(self):
+        self.fixture.push(6)
+        self.fixture.push(True)
+        self.fixture.push('cat')
+        self.assertEqual('cat', self.fixture.peek())
+        self.assertFalse(self.fixture.isEmpty())
+        self.assertEqual(3, self.fixture.size())
+
+    def testPopItemsOut(self):
+        self.fixture.push(6)
+        self.fixture.push(True)
+        self.fixture.push('cat')
+        self.assertEqual('cat', self.fixture.peek())
+        self.fixture.pop()
+        self.assertEqual(True, self.fixture.peek())
+        self.fixture.pop()
+        self.assertEqual(6, self.fixture.peek())
+        self.fixture.pop()
+        self.assertTrue((self.fixture.isEmpty()))
 
 class TestBinarySearchTree(unittest.TestCase):
     key_val = [

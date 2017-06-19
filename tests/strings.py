@@ -66,5 +66,10 @@ class StringsTest(unittest.TestCase):
         expected = ['If', 'Interestingly,', 'Our', 'The', 'This', 'We', 'What', 'Writing', 'You', 'a', 'activity', 'amounts', 'analysis', 'and', 'are', 'as', 'ask', 'assistants', 'assumes', 'be', 'behalf', 'best', 'book', 'boring', 'built', 'can', 'care', 'cell', 'computer', 'computers', 'continuously', 'could', 'creative', 'current-day', 'daily', 'data', 'difficult', 'do', 'else', 'essentially', 'everyone}', 'explain', 'fast', 'figure', 'find', 'for', 'from', 'fun', 'hardware', 'have', 'having', 'helpful', 'helping', 'how', 'humans', 'if', 'in', 'is', 'it', 'kinds', 'knew', 'know', 'language', 'laptops', 'like', 'lives', 'living', 'making', 'many', 'me', 'memory', 'mind-numbing', 'needs', 'newfound', 'next', 'of', 'often', 'on', 'once', 'only', 'or', 'our', 'out', 'personal', 'phones', 'problem', 'program', 'program,', 'programming', 'programs', 'question', 'ranging', 'reasons', 'reptitive', 'rewarding', 'skills', 'solve', 'solving', 'someone', 'speak', 'surrounded', 'take', 'tasks', 'tell', 'that', 'the', 'these', 'things', 'think', 'this', 'to', 'us', 'vasts', 'very', 'want', 'we', 'were', 'what', 'who', 'will', 'with', 'would', 'write', 'you', 'your', '{\\em']
         self.assertEquals(expected, actual)
 
+    def test_simpify_path(self):
+        input = "/a/./b/./../c/"
+        actual = self.fixture.simplifyPath(input)
+        self.assertEqual("/a/c", actual)
+
     def tearDown(self):
         del self.fixture

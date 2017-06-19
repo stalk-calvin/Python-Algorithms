@@ -1,5 +1,8 @@
 import string
 
+from calvin.data_structure.stack import Stack
+
+
 class Strings(object):
     """
     Implementation on String Manipulation
@@ -145,3 +148,16 @@ class Strings(object):
 
         wordlist.sort()
         return wordlist
+
+    def simplifyPath(self, path):
+        s = Stack()
+        skip = {"..", ".", ""}
+        for dir in path.split("/"):
+            if (dir == ".." and not s.isEmpty()):
+                s.pop()
+            elif dir not in skip:
+                s.push(dir)
+        res = ""
+        for elem in s:
+            res = "/" + elem + res
+        return "/" if not res else res
