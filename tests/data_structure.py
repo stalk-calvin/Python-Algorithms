@@ -12,7 +12,7 @@ class TestStack(unittest.TestCase):
         self.fixture = Stack()
         self.assertTrue(self.fixture.isEmpty())
 
-    def testPushVariousTypes(self):
+    def test_push_various_types(self):
         self.fixture.push(6)
         self.fixture.push(True)
         self.fixture.push('cat')
@@ -20,7 +20,7 @@ class TestStack(unittest.TestCase):
         self.assertFalse(self.fixture.isEmpty())
         self.assertEqual(3, self.fixture.size())
 
-    def testPopItemsOut(self):
+    def test_pop_items_out(self):
         self.fixture.push(6)
         self.fixture.push(True)
         self.fixture.push('cat')

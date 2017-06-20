@@ -71,5 +71,10 @@ class StringsTest(unittest.TestCase):
         actual = self.fixture.simplifyPath(input)
         self.assertEqual("/a/c", actual)
 
+    def test_find_non_repeated_index(self):
+        input = "teeter"
+        actual = self.fixture.findNonRepeatedIndex(input)
+        self.assertEqual('r', actual)
+
     def tearDown(self):
         del self.fixture

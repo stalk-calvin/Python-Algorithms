@@ -161,3 +161,18 @@ class Strings(object):
         for elem in s:
             res = "/" + elem + res
         return "/" if not res else res
+
+    def findNonRepeatedIndex(self, x):
+        if not x: return x
+        if len(x) < 2: return x[0]
+        tracker = {}
+        for c in x:
+            if c in tracker:
+                tracker[c] += 1
+            else:
+                tracker[c] = 1
+        for c in x:
+            if (tracker[c] == 1):
+                return c
+        return None
+        
