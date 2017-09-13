@@ -2,7 +2,7 @@ from random import shuffle
 
 import unittest
 
-from calvin.data_structure import binary_tree_search
+from calvin.data_structure import tree
 from calvin.data_structure.stack import Stack
 
 class TestStack(unittest.TestCase):
@@ -49,7 +49,7 @@ class TestBinarySearchTree(unittest.TestCase):
 
     def test_size(self):
         # Size starts at 0
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.assertEqual(self.bst.size(), 0)
         # Doing a put increases the size to 1
         self.bst.put("one", 1)
@@ -60,7 +60,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.bst.put("one", 2)
         self.assertEqual(self.bst.size(), 1)
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         size = 0
         for pair in self.key_val:
             k, v = pair
@@ -70,22 +70,21 @@ class TestBinarySearchTree(unittest.TestCase):
 
         shuffled = self.shuffle_list(self.key_val[:])
 
-        self.bst = binary_tree_search.BinarySearchTree()
-        size = 0
+        self.bst = tree.BinarySearchTree()
         for pair in shuffled:
             k, v = pair
             self.bst.put(k, v)
-            size += 1
-            self.assertEqual(self.bst.size(), size)
+
+        self.assertEqual(self.bst.size(), size)
 
     def test_is_empty(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.assertTrue(self.bst.is_empty())
         self.bst.put("a", 1)
         self.assertFalse(self.bst.is_empty())
 
     def test_get(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         # Getting a key not in BST returns None
         self.assertEqual(self.bst.get("one"), None)
 
@@ -93,7 +92,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.bst.put("one", 1)
         self.assertEqual(self.bst.get("one"), 1)
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in self.key_val:
             k, v = pair
             self.bst.put(k, v)
@@ -101,20 +100,20 @@ class TestBinarySearchTree(unittest.TestCase):
 
         shuffled = self.shuffle_list(self.key_val[:])
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in shuffled:
             k, v = pair
             self.bst.put(k, v)
             self.assertEqual(self.bst.get(k), v)
 
     def test_contains(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.assertFalse(self.bst.contains("a"))
         self.bst.put("a", 1)
         self.assertTrue(self.bst.contains("a"))
 
     def test_put(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
 
         # When BST is empty first put becomes root
         self.bst.put("bbb", 1)
@@ -128,7 +127,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.root.left, None)
         self.assertEqual(self.bst.root.right.key, "ccc")
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("bbb", 1)
         # Adding a key less than root doesn't update the right tree
         # but does update the left
@@ -137,7 +136,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.root.right, None)
         self.assertEqual(self.bst.root.left.key, "aaa")
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         size = 0
         for pair in self.key_val:
             k, v = pair
@@ -146,7 +145,7 @@ class TestBinarySearchTree(unittest.TestCase):
             self.assertEqual(self.bst.get(k), v)
             self.assertEqual(self.bst.size(), size)
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
 
         shuffled = self.shuffle_list(self.key_val[:])
 
@@ -159,7 +158,7 @@ class TestBinarySearchTree(unittest.TestCase):
             self.assertEqual(self.bst.size(), size)
 
     def test_min_key(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in self.key_val[::-1]:
             k, v = pair
             self.bst.put(k, v)
@@ -167,14 +166,14 @@ class TestBinarySearchTree(unittest.TestCase):
 
         shuffled = self.shuffle_list(self.key_val[:])
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in shuffled:
             k, v = pair
             self.bst.put(k, v)
         self.assertEqual(self.bst.min_key(), "a")
 
     def test_max_key(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in self.key_val:
             k, v = pair
             self.bst.put(k, v)
@@ -182,14 +181,14 @@ class TestBinarySearchTree(unittest.TestCase):
 
         shuffled = self.shuffle_list(self.key_val[:])
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in shuffled:
             k, v = pair
             self.bst.put(k, v)
         self.assertEqual(self.bst.max_key(), "i")
 
     def test_floor_key(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.assertEqual(self.bst.floor_key("a"), None)
         self.bst.put("a", 1)
         self.bst.put("c", 3)
@@ -200,7 +199,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.floor_key("g"), "g")
         self.assertEqual(self.bst.floor_key("h"), "g")
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("c", 3)
         self.bst.put("e", 5)
         self.bst.put("a", 1)
@@ -211,7 +210,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.floor_key("h"), "g")
 
     def test_ceiling_key(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.assertEqual(self.bst.ceiling_key("a"), None)
         self.bst.put("a", 1)
         self.bst.put("c", 3)
@@ -222,7 +221,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.ceiling_key("g"), "g")
         self.assertEqual(self.bst.ceiling_key("f"), "g")
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("c", 3)
         self.bst.put("e", 5)
         self.bst.put("a", 1)
@@ -235,7 +234,7 @@ class TestBinarySearchTree(unittest.TestCase):
     def test_select_key(self):
         shuffled = self.shuffle_list(self.key_val[:])
 
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.assertEqual(self.bst.select_key(0), None)
         for pair in shuffled:
             k, v = pair
@@ -245,7 +244,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.select_key(2), "c")
 
     def test_rank(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.assertEqual(self.bst.rank("a"), None)
 
         for pair in self.key_val:
@@ -258,7 +257,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.rank("d"), 3)
 
         shuffled = self.shuffle_list(self.key_val[:])
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in shuffled:
             k, v = pair
             self.bst.put(k, v)
@@ -269,7 +268,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.rank("d"), 3)
 
     def test_delete_min(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in self.key_val:
             k, v = pair
             self.bst.put(k, v)
@@ -280,7 +279,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.min_key(), None)
 
         shuffled = self.shuffle_list(self.key_val[:])
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in shuffled:
             k, v = pair
             self.bst.put(k, v)
@@ -291,7 +290,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.min_key(), None)
 
     def test_delete_max(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         for pair in self.key_val:
             k, v = pair
             self.bst.put(k, v)
@@ -314,20 +313,20 @@ class TestBinarySearchTree(unittest.TestCase):
 
     def test_delete(self):
         # delete key from an empty bst
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.delete("a")
         self.assertEqual(self.bst.root, None)
         self.assertEqual(self.bst.size(), 0)
 
         # delete key not present in bst
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("a", 1)
         self.bst.delete("b")
         self.assertEqual(self.bst.root.key, "a")
         self.assertEqual(self.bst.size(), 1)
 
         # delete key when bst only contains one key
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("a", 1)
         self.assertEqual(self.bst.root.key, "a")
         self.bst.delete("a")
@@ -335,7 +334,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.size(), 0)
 
         # delete parent key when it only has a left child
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("b", 2)
         self.bst.put("a", 1)
         self.assertEqual(self.bst.root.left.key, "a")
@@ -344,7 +343,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.size(), 1)
 
         # delete parent key when it only has a right child
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("a", 1)
         self.bst.put("b", 2)
         self.assertEqual(self.bst.root.right.key, "b")
@@ -353,7 +352,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.size(), 1)
 
         # delete left child key
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("b", 2)
         self.bst.put("a", 1)
         self.assertEqual(self.bst.root.left.key, "a")
@@ -362,7 +361,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.size(), 1)
 
         # delete right child key
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("a", 1)
         self.bst.put("b", 2)
         self.assertEqual(self.bst.root.right.key, "b")
@@ -371,7 +370,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.size(), 1)
 
         # delete parent key when it has a left and right child
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.bst.put("b", 2)
         self.bst.put("a", 1)
         self.bst.put("c", 3)
@@ -380,7 +379,7 @@ class TestBinarySearchTree(unittest.TestCase):
         self.assertEqual(self.bst.size(), 2)
 
     def test_keys(self):
-        self.bst = binary_tree_search.BinarySearchTree()
+        self.bst = tree.BinarySearchTree()
         self.assertEqual(self.bst.keys(), [])
 
         for pair in self.key_val2:

@@ -10,6 +10,18 @@ class Node(object):
         self.left = None
         self.right = None
 
+class BinaryTree(object):
+    def find_inorder_wrapper(self, root):
+        result = []
+        if root is None: return result
+        return self.find_inorder(root, result)
+
+    def find_inorder(self, root, result):
+        if root is None: return result
+        self.find_inorder(root.left, result)
+        result.append(root.val)
+        self.find_inorder(root.right, result)
+        return result
 
 class BinarySearchTree(object):
     """
