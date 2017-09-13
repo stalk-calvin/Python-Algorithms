@@ -2,7 +2,6 @@ import string
 
 from calvin.data_structure.stack import Stack
 
-
 class Strings(object):
     """
     Implementation on String Manipulation
@@ -135,6 +134,7 @@ class Strings(object):
                 bigword = word
                 bigcount = count
 
+        handle.close()
         return [bigword, bigcount]
 
     def wordList(self, filelocation):
@@ -146,6 +146,7 @@ class Strings(object):
                 if word in wordlist: continue
                 wordlist.append(word)
 
+        handle.close()
         wordlist.sort()
         return wordlist
 
@@ -158,7 +159,8 @@ class Strings(object):
             elif dir not in skip:
                 s.push(dir)
         res = ""
-        for elem in s:
+        while(not s.isEmpty()):
+            elem = s.next()
             res = "/" + elem + res
         return "/" if not res else res
 
@@ -175,4 +177,3 @@ class Strings(object):
             if (tracker[c] == 1):
                 return c
         return None
-        
