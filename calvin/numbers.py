@@ -28,7 +28,7 @@ class Numbers(object):
         if (0 <= n < len(self.table)):
             return self.table[n]
 
-        self.table.append(self.fib3(n - 1) + self.fib3(n - 2));
+        self.table.append(self.fib3(n - 1) + self.fib3(n - 2))
         return self.table[n]
 
     def bullsAndCows(self, secret, guess):
@@ -47,3 +47,16 @@ class Numbers(object):
                 numbers[g] -= 1
 
         return str(bulls) + "A" + str(cows) + "B"
+
+    def toBinaryNumber(self, x, y):
+        return ''.join('10'[a + b < '11'] for a, b in zip(x, y))
+
+    def sortNumbersBetweenSigns(self, s, sign):
+        return sign.join(sorted(s.split(sign)))
+
+    def cantorSet(self,d,n):
+        if n == 0:
+            return (3 ** d) * '+'
+        if d == 0:
+            return '+'
+        return self.cantorSet(d - 1, n - 1) + ' ' * (3 ** (d - 1)) + self.cantorSet(d - 1, n - 1)

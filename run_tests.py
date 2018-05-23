@@ -12,9 +12,6 @@ sys.path[0:0] = [
     tests_path,
 ]
 
-all_tests = [f[:-3] for f in os.listdir(tests_path)
-             if not f.startswith('__') and f.endswith(".py")]
-
 def get_suite(tests):
     tests = sorted(tests)
     suite = unittest.TestSuite()
@@ -28,16 +25,17 @@ if __name__ == '__main__':
     To run all tests:
         $ python run_tests.py
     To run a single test:
-        $ python run_tests.py app
+        $ python run_tests.py numbers
     To run a couple of tests:
-        $ python run_tests.py app config sessions
+        $ python run_tests.py numbers strings data_structure
+    To run a specific test:
+        $ python -m unittest tests.numbers.NumbersTest.test_sortNumbersBetweenSigns
     To run code coverage:
         $ coverage run run_tests.py
         $ coverage report -m
     """
     tests = sys.argv[1:]
     if not tests:
-        tests = all_tests
-    tests = ['%s' % t for t in tests]
+        tests = [f[:-3] for f in os.listdir(tests_path) if not f.startswith('__') and f.endswith(".py")]
     suite = get_suite(tests)
-    unittest.TextTestRunner(verbosity=1).run(suite)
+    unittest.TextTestRunner(verbosity=2).run(suite)
