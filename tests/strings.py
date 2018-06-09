@@ -74,5 +74,9 @@ class StringsTest(unittest.TestCase):
         actual = self.fixture.findNonRepeatedIndex(input)
         self.assertEqual('r', actual)
 
+    def test_shiftVowels(self):
+        actual = self.fixture.shiftVowels('I love her')
+        self.assertEqual('e lIvo her', actual)
+
     def tearDown(self):
         del self.fixture

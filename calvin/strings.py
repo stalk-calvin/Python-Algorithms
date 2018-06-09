@@ -177,3 +177,16 @@ class Strings(object):
             if (tracker[c] == 1):
                 return c
         return None
+
+
+    def shiftVowels(self,s):
+        """
+        Shift vowel one to the right (non-case sensitive)
+        For example, "I love her" => "e lIvo her"
+        :param s: input string to shift vowels
+        :return: shifted string
+        """
+        l = list(s)
+        j = [e for e in enumerate(l) if e[1].lower() in "aeiou"]
+        for k in range(len(j)): l[j[(k + 1) % len(j)][0]] = j[k][1]
+        return ''.join(l)
