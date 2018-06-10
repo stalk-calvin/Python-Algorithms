@@ -60,3 +60,14 @@ class Numbers(object):
         if d == 0:
             return '+'
         return self.cantorSet(d - 1, n - 1) + ' ' * (3 ** (d - 1)) + self.cantorSet(d - 1, n - 1)
+
+    def msTodhms(self, ms):
+        """
+        Given ms, show its day, hour, min, second
+        :return: d,h,m,s
+        """
+        s = ms / 1000
+        m, s = divmod(s, 60)
+        h, m = divmod(m, 60)
+        d, h = divmod(h, 24)
+        return d, h, m, s

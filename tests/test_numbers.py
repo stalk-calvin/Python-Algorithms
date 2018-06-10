@@ -41,3 +41,9 @@ class NumbersTest(unittest.TestCase):
         actual = self.fixture.sortNumbersBetweenSigns('2*3*1', '*')
         self.assertEqual("1*2*3", actual)
 
+    def test_msTodhms(self):
+        d, h, m, s = self.fixture.msTodhms(362461000)
+        self.assertEqual(4, d)
+        self.assertEqual(4, h)
+        self.assertEqual(41, m)
+        self.assertEqual(1, s)
