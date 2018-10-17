@@ -3,8 +3,9 @@ from random import shuffle
 import unittest
 
 from calvin.data_structure.tree import BinarySearchTree
+from calvin.data_structure.queue import Queue
 from calvin.data_structure.stack import Stack
-from calvin.data_structure.linkedlist import LinkedList,ListNode
+from calvin.data_structure.linkedlist import LinkedList
 
 class TestLinkedList(unittest.TestCase):
     def setUp(self):
@@ -29,10 +30,55 @@ class TestLinkedList(unittest.TestCase):
         self.fixture.delete_node_by_value('C')
         self.assertEqual("['A','B']", str(self.fixture))
 
+class TestQueue(unittest.TestCase):
+    def setUp(self):
+        self.fixture = Queue()
+        self.assertTrue(self.fixture.isEmpty())
+
+    def test_iter(self):
+        self.fixture.enqueue(1)
+        self.fixture.enqueue(2)
+        self.fixture.enqueue(3)
+        stackiter = iter(self.fixture)
+        expected = [3,2,1]
+        for i in stackiter:
+            self.assertEqual(expected.pop(),i)
+
+    def test_push_various_types(self):
+        self.fixture.enqueue(6)
+        self.fixture.enqueue(True)
+        self.fixture.enqueue('cat')
+        self.assertEqual(6, self.fixture.peek())
+        self.assertFalse(self.fixture.isEmpty())
+        self.assertEqual(3, self.fixture.size())
+
+    def test_pop_items_out(self):
+        self.fixture.enqueue(6)
+        self.fixture.enqueue(True)
+        self.fixture.enqueue('cat')
+        self.assertEqual(6, self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertEqual(True, self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertEqual('cat', self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertTrue((self.fixture.isEmpty()))
+        self.assertRaises(IndexError, self.fixture.dequeue)
+        self.assertRaises(Exception, self.fixture.peek)
+
 class TestStack(unittest.TestCase):
     def setUp(self):
         self.fixture = Stack()
         self.assertTrue(self.fixture.isEmpty())
+
+    def test_iter(self):
+        self.fixture.push(1)
+        self.fixture.push(2)
+        self.fixture.push(3)
+        stackiter = iter(self.fixture)
+        expected = [1,2,3]
+        for i in stackiter:
+            self.assertEqual(expected.pop(),i)
 
     def test_push_various_types(self):
         self.fixture.push(6)
@@ -53,6 +99,8 @@ class TestStack(unittest.TestCase):
         self.assertEqual(6, self.fixture.peek())
         self.fixture.pop()
         self.assertTrue((self.fixture.isEmpty()))
+        self.assertRaises(IndexError, self.fixture.pop)
+        self.assertRaises(Exception, self.fixture.peek)
 
 class TestBinarySearchTree(unittest.TestCase):
     key_val = [

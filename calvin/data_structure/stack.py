@@ -12,7 +12,10 @@ class Stack:
         return self.items.pop()
 
     def peek(self):
-        return self.items[len(self.items) - 1]
+        if self.isEmpty():
+            raise Exception('Empty Stack Exception')
+        else:
+            return self.items[len(self.items) - 1]
 
     def size(self):
         return len(self.items)
@@ -20,7 +23,7 @@ class Stack:
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if len(self.items)>0:
             return self.pop()
         else:

@@ -1,4 +1,11 @@
 ## Data structure
+
+### Linkedlist
+Some handy functions for linked list (includes nodes)
+
+### Queue/Stack
+Necessary functions for Queue/Stack ADT
+
 ### Binary Search Tree
 Basic functionality of how BST works: get, set, contains, max/min key, etc.
 

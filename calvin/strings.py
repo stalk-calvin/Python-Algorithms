@@ -159,8 +159,8 @@ class Strings(object):
             elif dir not in skip:
                 s.push(dir)
         res = ""
-        while(not s.isEmpty()):
-            elem = s.next()
+        siter = iter(s)
+        for elem in siter:
             res = "/" + elem + res
         return "/" if not res else res
 
