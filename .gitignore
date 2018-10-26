@@ -1,6 +1,8 @@
 *.prefs
 *.swp
 *~
+.bash*
+.vim*
 
 # Intellij
 .idea/
@@ -19,6 +21,7 @@ pm_to_blib
 algo_venv/
 
 # Python
+.cache
 *.pyc
 /*.egg-info
 *.ropeproject/

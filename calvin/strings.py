@@ -190,3 +190,39 @@ class Strings(object):
         j = [e for e in enumerate(l) if e[1].lower() in "aeiou"]
         for k in range(len(j)): l[j[(k + 1) % len(j)][0]] = j[k][1]
         return ''.join(l)
+
+    def compareVersion(self, v1, v2):
+        """
+        Compare 2 version numbers v1 and v2
+
+        :param v1: version 1
+        :param v2: version 2
+        :return: if v1>v2 = 1, v1<v2 = -1, otherwise 0
+        """
+        v1v = v1.split('.')
+        v2v = v2.split('.')
+        def validateNumbers(elems):
+            v = ''
+            for e in elems:
+                if not e.isdigit():
+                    raise Exception("Must contain digits or float value")
+                else:
+                    v+=e
+            return v
+
+        v1 = validateNumbers(v1v)
+        v2 = validateNumbers(v2v)
+
+        p=(v1,v2)
+        for i in range(max(len(v1), len(v2))):
+            f = int(p[0][i]) if i < len(p[0]) else 0
+            s = int(p[1][i]) if i < len(p[1]) else 0
+            if f == s:
+                continue
+            else:
+                if f > s:
+                    return 1
+                elif s > f:
+                    return -1
+                else:
+                    return 0

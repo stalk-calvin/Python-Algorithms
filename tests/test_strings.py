@@ -78,5 +78,9 @@ class StringsTest(unittest.TestCase):
         actual = self.fixture.shiftVowels('I love her')
         self.assertEqual('e lIvo her', actual)
 
+    def test_compareVersion(self):
+        actual = self.fixture.compareVersion('0.1', '0.11')
+        self.assertEquals(-1, actual)
+
     def tearDown(self):
         del self.fixture
