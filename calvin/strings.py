@@ -226,3 +226,22 @@ class Strings(object):
                     return -1
                 else:
                     return 0
+
+    def countAndSay(self, n):
+        s = '1'
+        for i in range(1,n):
+            r = ''
+            c = s[0]
+            count = 1
+            for i in range(1,len(s)):
+                if (s[i]==c):
+                    count+=1
+                else:
+                    r+=str(count)
+                    r+=c
+                    c=s[i]
+                    count=1
+            r+=str(count)
+            r+=c
+            s=r
+        return s

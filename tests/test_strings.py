@@ -82,5 +82,9 @@ class StringsTest(unittest.TestCase):
         actual = self.fixture.compareVersion('0.1', '0.11')
         self.assertEquals(-1, actual)
 
+    def test_countAndSay(self):
+        actual = self.fixture.countAndSay(6)
+        self.assertEquals('312211', actual)
+
     def tearDown(self):
         del self.fixture
