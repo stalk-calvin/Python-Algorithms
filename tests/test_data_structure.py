@@ -3,8 +3,8 @@ from random import shuffle
 import unittest
 
 from calvin.data_structure.tree import BinarySearchTree
-from calvin.data_structure.queue import Queue
-from calvin.data_structure.stack import Stack
+from calvin.data_structure.queue import Queue, QueueUsingStacks
+from calvin.data_structure.stack import Stack, StackUsingQueue
 from calvin.data_structure.linkedlist import LinkedList
 
 class TestLinkedList(unittest.TestCase):
@@ -66,6 +66,33 @@ class TestQueue(unittest.TestCase):
         self.assertRaises(IndexError, self.fixture.dequeue)
         self.assertRaises(Exception, self.fixture.peek)
 
+class TestQueueUsingStacks(unittest.TestCase):
+    def setUp(self):
+        self.fixture = QueueUsingStacks()
+        self.assertTrue(self.fixture.isEmpty())
+
+    def test_push_various_types(self):
+        self.fixture.enqueue(6)
+        self.fixture.enqueue(True)
+        self.fixture.enqueue('cat')
+        self.assertEqual(6, self.fixture.peek())
+        self.assertFalse(self.fixture.isEmpty())
+        self.assertEqual(3, self.fixture.size())
+
+    def test_pop_items_out(self):
+        self.fixture.enqueue(6)
+        self.fixture.enqueue(True)
+        self.fixture.enqueue('cat')
+        self.assertEqual(6, self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertEqual(True, self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertEqual('cat', self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertTrue((self.fixture.isEmpty()))
+        self.assertRaises(Exception, self.fixture.dequeue)
+        self.assertRaises(Exception, self.fixture.peek)
+
 class TestStack(unittest.TestCase):
     def setUp(self):
         self.fixture = Stack()
@@ -102,6 +129,33 @@ class TestStack(unittest.TestCase):
         self.assertRaises(IndexError, self.fixture.pop)
         self.assertRaises(Exception, self.fixture.peek)
 
+class TestStackUsingQueue(unittest.TestCase):
+    def setUp(self):
+        self.fixture = StackUsingQueue()
+        self.assertTrue(self.fixture.isEmpty())
+
+    def test_push_various_types(self):
+        self.fixture.push(6)
+        self.fixture.push(True)
+        self.fixture.push('cat')
+        self.assertEqual('cat', self.fixture.peek())
+        self.assertFalse(self.fixture.isEmpty())
+        self.assertEqual(3, self.fixture.size())
+
+    def test_pop_items_out(self):
+        self.fixture.push(6)
+        self.fixture.push(True)
+        self.fixture.push('cat')
+        self.assertEqual('cat', self.fixture.peek())
+        self.fixture.pop()
+        self.assertEqual(True, self.fixture.peek())
+        self.fixture.pop()
+        self.assertEqual(6, self.fixture.peek())
+        self.fixture.pop()
+        self.assertTrue((self.fixture.isEmpty()))
+        self.assertRaises(Exception, self.fixture.pop)
+        self.assertRaises(Exception, self.fixture.peek)
+
 class TestBinarySearchTree(unittest.TestCase):
     key_val = [
         ("a", 1), ("b", 2), ("c", 3),
@@ -113,6 +167,12 @@ class TestBinarySearchTree(unittest.TestCase):
         ("d", 4), ("e", 5), ("f", 6),
         ("a", 1), ("b", 2), ("c", 3),
         ("g", 7), ("h", 8), ("i", 9)
+    ]
+
+    balanced = [
+        ("d", 4), ("f", 6), ("e", 5),
+        ("b", 2), ("a", 1), ("c", 3),
+        ("g", 7)
     ]
 
     def shuffle_list(self, ls):
@@ -148,6 +208,27 @@ class TestBinarySearchTree(unittest.TestCase):
             self.bst.put(k, v)
 
         self.assertEqual(self.bst.size(), size)
+
+    def test_LCA(self):
+        self.bst = BinarySearchTree()
+        for pair in self.key_val2:
+            k, v = pair
+            self.bst.put(k, v)
+        self.assertEquals(4, self.bst.LCA(self.bst.root, 1, 9).val)
+
+    def test_is_balanced(self):
+        self.bst = BinarySearchTree()
+        for pair in self.balanced:
+            k, v = pair
+            self.bst.put(k, v)
+        self.assertEquals(True, self.bst.is_balanced(self.bst.root).balanced)
+
+    def test_is_not_balanced(self):
+        self.bst = BinarySearchTree()
+        for pair in self.key_val2:
+            k, v = pair
+            self.bst.put(k, v)
+        self.assertEquals(False, self.bst.is_balanced(self.bst.root).balanced)
 
     def test_is_empty(self):
         self.bst = BinarySearchTree()

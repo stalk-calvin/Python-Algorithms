@@ -16,6 +16,9 @@ class StringsTest(unittest.TestCase):
         actual = self.fixture.findTheDifference(s, t)
         self.assertEqual("e", actual)
 
+    def test_anagramCounter(self):
+        self.assertEquals(4, self.fixture.anagramCounter('cde','abc'))
+
     def test_reverse_string(self):
         input = "abcd"
         actual = self.fixture.reverseString(input)
@@ -85,6 +88,10 @@ class StringsTest(unittest.TestCase):
     def test_countAndSay(self):
         actual = self.fixture.countAndSay(6)
         self.assertEquals('312211', actual)
+
+    def test_number_to_words(self):
+        actual = self.fixture.number_to_words(1592837572)
+        self.assertEquals("One Billion Five Hundred Ninety Two Million Eight Hundred Thirty Seven Thousand Five Hundred Seventy Two", actual)
 
     def tearDown(self):
         del self.fixture

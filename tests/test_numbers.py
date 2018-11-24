@@ -47,3 +47,6 @@ class NumbersTest(unittest.TestCase):
         self.assertEqual(4, h)
         self.assertEqual(41, m)
         self.assertEqual(1, s)
+
+    def test_combination_sum(self):
+        print(self.fixture.combination_sum([1,2,4], 5))

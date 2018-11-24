@@ -71,3 +71,28 @@ class Numbers(object):
         h, m = divmod(m, 60)
         d, h = divmod(h, 24)
         return d, h, m, s
+
+    # recursive
+    def combination_sum(self, n, t):
+        if not n or not t:
+            return []
+        result = []
+        if len(n) == 1:
+            if n[0] == t:
+                result.append(n[0])
+            return result
+        n = sorted(n)
+        self.findSumRecursively(n, [], result, t, 0)
+        return result
+
+    def findSumRecursively(self, input, temp, result, target, start):
+        if (target < 0):
+            return
+        elif (target == 0):
+            result.append(list(temp))
+        else:
+            for i in range(start, len(input)):
+                temp.append(input[i])
+                self.findSumRecursively(input, temp, result, target - input[i], i)
+                temp.pop()
+

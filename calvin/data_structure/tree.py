@@ -23,6 +23,11 @@ class BinaryTree(object):
         self.find_inorder(root.right, result)
         return result
 
+class BalancedWithHeight(object):
+    def __init__(self, balanced, height):
+        self.balanced = balanced
+        self.height = height
+
 class BinarySearchTree(object):
     """
     Implementation of a Binary Search Tree.
@@ -30,6 +35,21 @@ class BinarySearchTree(object):
 
     def __init__(self):
         self.root = None
+
+    def is_balanced(self,tree):
+        if tree is None:
+            return BalancedWithHeight(True, -1)
+        left = self.is_balanced(tree.left)
+        if (not left.balanced):
+            return left
+        right = self.is_balanced(tree.right)
+        if (not right.balanced):
+            return right
+        balanced = True
+        if abs(left.height - right.height) > 1:
+            balanced = False
+        height = max(left.height, right.height) + 1
+        return BalancedWithHeight(balanced, height)
 
     def _size(self, node):
         if node is None:
@@ -116,6 +136,7 @@ class BinarySearchTree(object):
         Balanced Tree Complexity: O(lg N)
         """
         self.root = self._put(key, val, self.root)
+
 
     def _min_node(self):
         """
@@ -392,3 +413,14 @@ class BinarySearchTree(object):
         """
         keys = []
         return self._keys(self.root, keys)
+
+    def LCA(self, root, l, r):
+        while (root != None):
+            if (root.val < l and root.val < r):
+                root = root.right
+            elif (root.val > l and root.val > r):
+                root = root.left
+            else:
+                return root
+        return root
+

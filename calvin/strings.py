@@ -17,6 +17,14 @@ class Strings(object):
             ans ^= ord(c)
         return chr(ans)
 
+    def anagramCounter(self, s1, s2):
+        freq = [0 for i in range(26)]
+        for x in s1:
+            freq[ord(x) - ord('a')] += 1
+        for y in s2:
+            freq[ord(y) - ord('a')] -= 1
+        return sum(abs(i) for i in freq)
+
     def reverseString(self, s):
         """
         :type s: str
@@ -245,3 +253,30 @@ class Strings(object):
             r+=c
             s=r
         return s
+
+    belowTen = ("", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine")
+    belowTwenty = ("Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen")
+    belowHundred = ("", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety")
+
+    def number_to_words(self, num):
+        if (num == 0):
+            return "Zero"
+        return self.__ntw_helper(num)
+
+    def __ntw_helper(self, num):
+        num = int(num)
+        if num < 10:
+            result = self.belowTen[num]
+        elif num < 20:
+            result = self.belowTwenty[num -10]
+        elif (num < 100):
+            result = self.belowHundred[int(num/10)] + " " + self.__ntw_helper(num % 10)
+        elif (num < 1000):
+            result = self.__ntw_helper(int(num/100)) + " Hundred " +  self.__ntw_helper(num % 100)
+        elif (num < 1000000):
+            result = self.__ntw_helper(int(num/1000)) + " Thousand " +  self.__ntw_helper(num % 1000)
+        elif (num < 1000000000):
+            result = self.__ntw_helper(int(num/1000000)) + " Million " +  self.__ntw_helper(num % 1000000)
+        else:
+            result = self.__ntw_helper(int(num/1000000000)) + " Billion " + self.__ntw_helper(num % 1000000000)
+        return result.strip()
