@@ -49,4 +49,11 @@ class NumbersTest(unittest.TestCase):
         self.assertEqual(1, s)
 
     def test_combination_sum(self):
-        print(self.fixture.combination_sum([1,2,4], 5))
+        self.assertEquals([[1, 1, 1, 1, 1], [1, 1, 1, 2], [1, 2, 2], [1, 4]], self.fixture.combination_sum([1,2,4], 5))
+
+    def test_countCoin(self):
+        array=[2,5,6,3]
+        m=len(array)
+        n=10
+        self.assertEquals(5, self.fixture.countCoin1d(array, m, n))
+        self.assertEquals(5, self.fixture.countCoin2d(array, m, n))

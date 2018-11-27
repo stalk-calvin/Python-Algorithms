@@ -6,6 +6,7 @@ from calvin.data_structure.tree import BinarySearchTree
 from calvin.data_structure.queue import Queue, QueueUsingStacks
 from calvin.data_structure.stack import Stack, StackUsingQueue
 from calvin.data_structure.linkedlist import LinkedList
+from calvin.data_structure.graph import Graph, Node, Traversals
 
 class TestLinkedList(unittest.TestCase):
     def setUp(self):
@@ -543,3 +544,55 @@ class TestBinarySearchTree(unittest.TestCase):
             self.bst.keys(),
             ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
         )
+
+class TestGraph(unittest.TestCase):
+    def setUp(self):
+        self.graph = self.build_graph()
+        self.fixture = Traversals()
+
+    def test_bfs(self):
+        self.fixture.bfs(self.graph.get_node()[0])
+        self.assertEquals(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], self.fixture.vertices)
+
+    def test_dfs(self):
+        self.fixture.dfs(self.graph.get_node()[0])
+        self.assertEquals(['A', 'B', 'E', 'C', 'F', 'I', 'J', 'G', 'H', 'D'], self.fixture.vertices)
+
+    def build_graph(self):
+        g = Graph()
+        tmp = [None] * 10
+
+        tmp[0] = Node('A', 3)
+        tmp[1] = Node('B', 2)
+        tmp[2] = Node('C', 4)
+        tmp[3] = Node('D', 1)
+        tmp[4] = Node('E', 1)
+        tmp[5] = Node('F', 3)
+        tmp[6] = Node('G', 0)
+        tmp[7] = Node('H', 0)
+        tmp[8] = Node('I', 0)
+        tmp[9] = Node('J', 0)
+
+        tmp[0].add_child_node(tmp[1])
+        tmp[0].add_child_node(tmp[2])
+        tmp[0].add_child_node(tmp[3])
+
+        tmp[1].add_child_node(tmp[0])
+        tmp[1].add_child_node(tmp[4])
+
+        tmp[2].add_child_node(tmp[5])
+        tmp[2].add_child_node(tmp[6])
+        tmp[2].add_child_node(tmp[6])
+        tmp[2].add_child_node(tmp[7])
+
+        tmp[3].add_child_node(tmp[0])
+
+        tmp[4].add_child_node(tmp[1])
+
+        tmp[5].add_child_node(tmp[1])
+        tmp[5].add_child_node(tmp[8])
+        tmp[5].add_child_node(tmp[9])
+
+        for i in range(10):
+            g.add_node(tmp[i])
+        return g

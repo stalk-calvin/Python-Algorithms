@@ -25,10 +25,21 @@ class StringsTest(unittest.TestCase):
         expected = "dcba"
         self.assertEqual(expected, actual)
 
+    def test_reverse_string_manual(self):
+        input = "abcd"
+        actual = self.fixture.reverseStringManual(input)
+        expected = "dcba"
+        self.assertEqual(expected, actual)
+
     def test_first_uniq_string(self):
         input = "eelvinlee"
         actual = self.fixture.firstUniqChar(input)
-        self.assertEqual(3, actual)
+        self.assertEqual('v', actual)
+
+    def test_first_uniq_string_manual(self):
+        input = "eelvinlee"
+        actual = self.fixture.firstUniqChar(input)
+        self.assertEqual('v', actual)
 
     def test_is_isomorphic(self):
         self.assertTrue(self.fixture.isIsomorphic("paper", "title"))
@@ -45,9 +56,14 @@ class StringsTest(unittest.TestCase):
         self.assertEqual("jew", actual)
 
     def test_reverse_vowels(self):
-        input = "calvin"
+        input = "calvin is a monster"
         actual = self.fixture.reverseVowels(input)
-        self.assertEqual("cilvan", actual)
+        self.assertEqual("celvon as i minstar", actual)
+
+    def test_reverse_vowels_manual(self):
+        input = "calvin is a monster"
+        actual = self.fixture.reverseVowelsManual(input)
+        self.assertEqual("celvon as i minstar", actual)
 
     def test_zig_zag(self):
         input = "PAYPALISHIRING"
@@ -92,6 +108,30 @@ class StringsTest(unittest.TestCase):
     def test_number_to_words(self):
         actual = self.fixture.number_to_words(1592837572)
         self.assertEquals("One Billion Five Hundred Ninety Two Million Eight Hundred Thirty Seven Thousand Five Hundred Seventy Two", actual)
+
+    def test_permutation(self):
+        self.fixture.permutation("1234")
+        actual = self.fixture.permuted
+        expected = {'1234', '1243', '1324', '1342', '1423', '1432', '2134', '2143', '2314', '2341', '2413', '2431', '3124', '3142', '3214', '3241', '3412', '3421', '4123', '4132', '4213', '4231', '4312', '4321'}
+        for item in actual:
+            if item not in expected:
+                self.fail("Unexpected value: "+ item)
+
+    def test_checkPalindromePermutation(self):
+        self.assertTrue(self.fixture.checkPalindromePermutation("Tact Coa"))
+
+    def test_one_away(self):
+        self.assertTrue(self.fixture.one_away("pales","pale"))
+        self.assertTrue(self.fixture.one_away("ple","pale"))
+
+    def test_string_compression(self):
+        self.assertEquals("a3b1c6a3",self.fixture.string_compression("aaabccccccaaa"))
+        self.assertEquals("a", self.fixture.string_compression("a"))
+        self.assertEquals("abc", self.fixture.string_compression("abc"))
+
+    def test_string_rotation(self):
+        self.assertTrue(self.fixture.string_rotation("waterbottle","erbottlewat"))
+        self.assertFalse(self.fixture.string_rotation("waterbottle","erbottlewa"))
 
     def tearDown(self):
         del self.fixture
