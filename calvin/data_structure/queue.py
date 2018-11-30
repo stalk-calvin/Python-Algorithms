@@ -59,3 +59,45 @@ class QueueUsingStacks():
 
     def size(self):
         return len(self.stack1) + len(self.stack2)
+
+class QueueUsingNodes():
+    class QueueNode():
+        def __init__(self,val,next=None):
+            self.val = val
+            self.next = next
+
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self.length=0
+
+    def enqueue(self, item):
+        n=QueueUsingNodes.QueueNode(item)
+        if self.head==None:
+            self.head=n
+            self.tail=n
+        else:
+            self.tail.next = n
+            self.tail = n
+        self.length+=1
+
+    def dequeue(self):
+        if (self.isEmpty()):
+            raise Exception("queue is empty!")
+        rv=None
+        self.head = self.head.next
+        if self.head == None:
+            self.tail = None
+        self.length-=1
+        return rv
+
+    def peek(self):
+        if (self.isEmpty()):
+            raise Exception("queue is empty!")
+        return self.head.val
+
+    def isEmpty(self):
+        return self.tail == None
+
+    def size(self):
+        return self.length
