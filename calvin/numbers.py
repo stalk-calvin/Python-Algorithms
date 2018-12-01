@@ -123,3 +123,21 @@ class Numbers(object):
                 table[i][j] = x + y
 
         return table[n][m-1]
+
+    def computeMovingAverage(self, input, window_size):
+        if input == None or window_size < 1:
+            return 0
+        elif len(input) == 1:
+            return input[0]
+
+        result = []
+        sum = 0
+        for i in range(len(input)):
+            if i < window_size:
+                sum += input[i]
+                result.append(sum / i + 1)
+            else:
+                remove_val = input[i - window_size]
+                sum -= remove_val + input[i]
+                result.append(sum / window_size)
+        return result
