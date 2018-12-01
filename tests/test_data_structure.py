@@ -2,7 +2,7 @@ from random import shuffle
 
 import unittest
 
-from calvin.data_structure.tree import BinarySearchTree
+from calvin.data_structure.tree import BinaryTree, BinarySearchTree
 from calvin.data_structure.queue import Queue, QueueUsingStacks, QueueUsingNodes
 from calvin.data_structure.stack import Stack, StackUsingQueue, StackUsingNodes, ThreeStacks, StackMin, SetOfStacks
 from calvin.data_structure.linkedlist import ListNode, LinkedList
@@ -836,3 +836,13 @@ class TestGraph(unittest.TestCase):
         for i in range(10):
             g.add_node(tmp[i])
         return g
+
+class TestBinaryTree(unittest.TestCase):
+    def setUp(self):
+        self.fixture = BinaryTree()
+        self.root = self.fixture.build_tree()
+
+    def test_serialize_tree(self):
+        out = []
+        self.fixture.serialize_preorder(self.root, out)
+        print(out)

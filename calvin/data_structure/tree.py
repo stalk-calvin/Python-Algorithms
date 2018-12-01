@@ -11,6 +11,12 @@ class Node(object):
         self.right = None
 
 class BinaryTree(object):
+    def build_tree(self):
+        root = Node(0, 1)
+        root.left = Node(0,2)
+        root.right = Node(0,3)
+        return root
+
     def find_inorder_wrapper(self, root):
         result = []
         if root is None: return result
@@ -22,6 +28,14 @@ class BinaryTree(object):
         result.append(root.val)
         self.find_inorder(root.right, result)
         return result
+
+    def serialize_preorder(self, root, out):
+        if root == None:
+            out.append('#')
+        else:
+            out.append(str(root.val))
+            self.serialize_preorder(root.left, out)
+            self.serialize_preorder(root.right, out)
 
 class BalancedWithHeight(object):
     def __init__(self, balanced, height):
