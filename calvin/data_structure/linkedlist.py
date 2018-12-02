@@ -217,3 +217,15 @@ class LinkedList(object):
             fast=fast.next
 
         return fast
+
+    def ll_from_list(self, input):
+        if input==None:
+            return None
+
+        l=ListNode(input[0])
+        rv=l
+        for index in range(1,len(input)):
+            l.next = ListNode(input[index])
+            l = l.next
+
+        return rv

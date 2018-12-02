@@ -1,3 +1,6 @@
+from calvin.data_structure.linkedlist import ListNode, LinkedList
+
+
 class Node(object):
     """
     Implementation of a Node in a Binary Search Tree.
@@ -42,11 +45,12 @@ class BalancedWithHeight(object):
         self.balanced = balanced
         self.height = height
 
+
+from collections import deque
 class BinarySearchTree(object):
     """
     Implementation of a Binary Search Tree.
     """
-
     def __init__(self):
         self.root = None
 
@@ -438,3 +442,84 @@ class BinarySearchTree(object):
                 return root
         return root
 
+    def create_minimal_bst_tree(self, sorted_array, start, end):
+        if end<start:
+            return None
+
+        m=int(start+(end-start)/2)
+        root=Node(0, sorted_array[m])
+        root.left = self.create_minimal_bst_tree(sorted_array, start, m-1)
+        root.right = self.create_minimal_bst_tree(sorted_array, m+1, end)
+        return root
+
+    def bfs_with_level(self, root):
+        result=[]
+        if root==None:
+            return result
+
+
+        q = deque()
+        q.append(root)
+        level_node = Node(0, 0)
+        q.append(level_node)
+        level = 1
+        while q:
+            t=q.popleft()
+
+            if (t is level_node):
+                if not q:
+                    break
+                level += 1
+                q.append(level_node)
+                continue
+
+            result.append(t.val)
+
+            if t.left:
+                q.append(t.left)
+            if t.right:
+                q.append(t.right)
+
+        return (result, level)
+
+    def depth(self, root):
+        if root==None:
+            return 0
+        elif root.left==None and root.right==None:
+            return 1
+        else:
+            depthLeft = 1+self.depth(root.left)
+            depthRight = 1+self.depth(root.right)
+            if depthLeft > depthRight:
+                return depthLeft
+            else:
+                return depthRight
+
+    def list_of_depths(self, root):
+        result=[]
+
+        if root == None or root.left == None and root.right == None:
+            result = [ListNode(root.val)]
+            return result
+
+        q=deque()
+        q.append(root)
+        current_ll=LinkedList()
+        current_ll.append(root.val)
+        tracker = LinkedList()
+        tracker.append(root)
+        while tracker.head:
+            result.append(current_ll)
+            parents=tracker.head
+            tracker=LinkedList()
+            current_ll=LinkedList()
+            while parents:
+                ll=parents.value
+                if ll.left:
+                    tracker.append(ll.left)
+                    current_ll.append(ll.left.val)
+                if ll.right:
+                    tracker.append(ll.right)
+                    current_ll.append(ll.right.val)
+                parents = parents.next
+        return result

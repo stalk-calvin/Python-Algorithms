@@ -50,9 +50,9 @@ class Traversals(object):
             if (n.state == State.UNVISITED):
                 self.dfs(n)
 
-    def bfs(self, root):
+    def bfs(self, root, match=None):
         if root == None:
-            return
+            return False
 
         from collections import deque
         q = deque()
@@ -61,8 +61,17 @@ class Traversals(object):
 
         while q:
             r = q.popleft()
+            if match and r.get_vertex() == match.get_vertex():
+                return True
             self.vertices.append(r.get_vertex())
             for n in r.get_child():
                 if (n and n.state == State.UNVISITED):
                     q.append(n)
                     n.state = State.VISITED
+
+        return False
+
+    def route_between_two_nodes(self, a, b):
+        return self.bfs(a,b)
+
+

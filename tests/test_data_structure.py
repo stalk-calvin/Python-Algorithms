@@ -785,10 +785,37 @@ class TestBinarySearchTree(unittest.TestCase):
             ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
         )
 
+    def test_create_minimal_bst_tree(self):
+        input=[1,2,3,4,5,6,7,8]
+        self.bst = BinarySearchTree()
+        actual = self.bst.create_minimal_bst_tree(input, 0, len(input)-1)
+        self.assertEqual(2, actual.left.val)
+        self.assertEqual(3, actual.left.right.val)
+        (bfs, level) = self.bst.bfs_with_level(actual)
+        self.assertEqual([4,2,6,1,3,5,7,8],bfs)
+        self.assertEqual(4,level)
+
+    def test_list_of_depths(self):
+        input=[1,2,3,4,5,6,7,8]
+        self.bst = BinarySearchTree()
+        input = self.bst.create_minimal_bst_tree(input, 0, len(input)-1)
+        actual = self.bst.list_of_depths(input)
+        self.assertEqual([4], actual[0].head.getNodes(list()))
+        self.assertEqual([2,6], actual[1].head.getNodes(list()))
+        self.assertEqual([1,3,5,7], actual[2].head.getNodes(list()))
+        self.assertEqual([8], actual[3].head.getNodes(list()))
+
 class TestGraph(unittest.TestCase):
     def setUp(self):
         self.graph = self.build_graph()
         self.fixture = Traversals()
+
+    def test_route_between_two_nodes(self):
+        self.assertTrue(self.fixture.route_between_two_nodes(self.graph.get_node()[0], Node('H', 0)))
+        self.assertFalse(self.fixture.route_between_two_nodes(self.graph.get_node()[0], Node('X', 0)))
+        self.assertFalse(self.fixture.route_between_two_nodes(None, Node('H', 0)))
+        self.assertFalse(self.fixture.route_between_two_nodes(self.graph.get_node()[0], None))
+        self.assertFalse(self.fixture.route_between_two_nodes(None, None))
 
     def test_bfs(self):
         self.fixture.bfs(self.graph.get_node()[0])
@@ -845,4 +872,4 @@ class TestBinaryTree(unittest.TestCase):
     def test_serialize_tree(self):
         out = []
         self.fixture.serialize_preorder(self.root, out)
-        print(out)
+        self.assertEqual(['1', '2', '#', '#', '3', '#', '#'], out)
