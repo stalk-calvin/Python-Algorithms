@@ -6,12 +6,12 @@ class Node(object):
     Implementation of a Node in a Binary Search Tree.
     """
 
-    def __init__(self, key=None, val=None, size_of_subtree=1):
+    def __init__(self, key=None, val=None, size_of_subtree=1, left=None, right=None):
         self.key = key
         self.val = val
         self.size_of_subtree = size_of_subtree
-        self.left = None
-        self.right = None
+        self.left = left
+        self.right = right
 
 class BinaryTree(object):
     def build_tree(self):
@@ -40,11 +40,105 @@ class BinaryTree(object):
             self.serialize_preorder(root.left, out)
             self.serialize_preorder(root.right, out)
 
+    def serialize_inorder(self, root, out):
+        if root == None:
+            out.append('#')
+        else:
+            self.serialize_preorder(root.left, out)
+            out.append(str(root.val))
+            self.serialize_preorder(root.right, out)
+
+    def serialize_postorder(self, root, out):
+        if root == None:
+            out.append('#')
+        else:
+            self.serialize_preorder(root.left, out)
+            self.serialize_preorder(root.right, out)
+            out.append(str(root.val))
+
+    def deserialize_pretree(self, s):
+        if not s:
+            return None
+
+        n=None
+        value = s.popleft()
+        if value != '#':
+            n=Node(0, int(value))
+            n.left = self.deserialize_pretree(s)
+            n.right = self.deserialize_pretree(s)
+        return n
+
+    def first_common_ancestor(self, root, t1, t2):
+        if root == None:
+            return None
+        if root is t1 or root is t2:
+            return root
+        left = self.first_common_ancestor(root.left, t1, t2)
+        right = self.first_common_ancestor(root.right, t1, t2)
+        if left and right:
+            #found!
+            return root
+        if left == None:
+            return right
+        else:
+            return left
+
+    def check_subtree(self, t1, t2):
+        if t2 == None:
+            return True
+        return self.__sub_tree(t1, t2)
+
+    def __sub_tree(self, t1, t2):
+        if t1 == None:
+            return False
+        elif t1.val == t2.val and self.__match_tree(t1, t2):
+            return True
+        return self.__sub_tree(t1.left, t2) or self.__sub_tree(t1.right, t2)
+
+    def __match_tree(self, t1, t2):
+        if t1 == None and t2 == None:
+            return True
+        elif t1 == None or t2 == None:
+            return False
+        elif t1.val != t2.val:
+            return False
+        else:
+            return self.__match_tree(t1.left, t2.left) and self.__match_tree(t1.right, t2.right)
+
+    def path_sum(self, tree, to, current):
+        if tree == None:
+            return 0
+        current += tree.val
+
+        total_paths = 0
+        if to == current:
+            total_paths += 1
+
+        total_paths += self.path_sum(tree.left, to, current)
+        total_paths += self.path_sum(tree.right, to, current)
+
+        return total_paths
+
+    def path_sum_result(self, tree, to, current, result, line):
+        if tree == None:
+            return None
+
+        current += tree.val
+        line.append(tree.val)
+
+        if to == current:
+            result.append(line)
+
+        self.path_sum_result(tree.left, to, current, result, list(line))
+        self.path_sum_result(tree.right, to, current, result, list(line))
+
+        return result
+
+
 class BalancedWithHeight(object):
     def __init__(self, balanced, height):
         self.balanced = balanced
         self.height = height
-
 
 from collections import deque
 class BinarySearchTree(object):
@@ -54,8 +148,24 @@ class BinarySearchTree(object):
     def __init__(self):
         self.root = None
 
+    @staticmethod
+    def __get_height(tree):
+        if tree==None:
+            return 0
+
+        return max(BinarySearchTree.__get_height(tree.left), BinarySearchTree.__get_height(tree.right)) + 1
+
+    def is_balanced_bf(self, tree):
+        if tree==None:
+            return True
+        height = BinarySearchTree.__get_height(tree.left) + BinarySearchTree.__get_height(tree.right)
+        if (height > 1):
+            return False
+
+        return self.is_balanced_bf(tree.left) and self.is_balanced_bf(tree.right)
+
     def is_balanced(self,tree):
-        if tree is None:
+        if tree==None:
             return BalancedWithHeight(True, -1)
         left = self.is_balanced(tree.left)
         if (not left.balanced):
@@ -523,3 +633,24 @@ class BinarySearchTree(object):
                     current_ll.append(ll.right.val)
                 parents = parents.next
         return result
+
+    def is_bst(self, tree):
+        if tree == None or (tree.left == None and tree.right == None):
+            return True
+
+        val = tree.val
+        if (tree.left and tree.left.val > val) or (tree.right and tree.right.val < val):
+            return False
+
+        return self.is_bst(tree.left) and self.is_bst(tree.right)
+
+    def first_common_ancestor(self, root, t1, t2):
+        if root == None:
+            return None
+        if root.val > t1.val and root.val > t2.val:
+            return self.first_common_ancestor(root.left, t1, t2)
+        elif root.val < t1.val and root.val < t2.val:
+            return self.first_common_ancestor(root.right, t1, t2)
+        else:
+            return root.val
+

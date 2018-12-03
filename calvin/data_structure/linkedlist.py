@@ -84,14 +84,14 @@ class LinkedList(object):
             n=n.next
         return self.head
 
-    def printKthLastRecursive(self, head, k):
+    def printKthLastRecursive(self, head, k, result):
         if head == None:
             return 0
 
-        index = self.printKthLastRecursive(head.next, k) + 1
+        index = self.printKthLastRecursive(head.next, k, result) + 1
 
         if (index == k):
-            print("Found: "+str(head.value))
+            result.append(head.value)
 
         return index
 

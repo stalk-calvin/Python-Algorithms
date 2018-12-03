@@ -2,11 +2,12 @@ from random import shuffle
 
 import unittest
 
-from calvin.data_structure.tree import BinaryTree, BinarySearchTree
+from calvin.data_structure.graph.tree import BinaryTree, BinarySearchTree, Node as tn
 from calvin.data_structure.queue import Queue, QueueUsingStacks, QueueUsingNodes
 from calvin.data_structure.stack import Stack, StackUsingQueue, StackUsingNodes, ThreeStacks, StackMin, SetOfStacks
 from calvin.data_structure.linkedlist import ListNode, LinkedList
-from calvin.data_structure.graph import Graph, Node, Traversals
+from calvin.data_structure.graph.graph import Graph, Node, Traversals
+from calvin.data_structure.graph.graph_build_order import BuildOrder, Graph as bo_graph
 
 class TestLinkedList(unittest.TestCase):
     def setUp(self):
@@ -48,7 +49,9 @@ class TestLinkedList(unittest.TestCase):
         self.assertEquals([0, 1], self.fixture.head.getNodes(list()))
 
     def test_printKthLastRecursive(self):
-        self.fixture.printKthLastRecursive(self.fixture.head, 2)
+        result=[]
+        self.fixture.printKthLastRecursive(self.fixture.head, 2, result)
+        self.assertEqual(['B'], result)
 
     def test_getKthLastNodes(self):
         self.assertEquals('B', self.fixture.getKthLastUsingNodes(self.fixture.head, 2).value)
@@ -416,394 +419,374 @@ class TestBinarySearchTree(unittest.TestCase):
         ("g", 7)
     ]
 
+    def setUp(self):
+        self.fixture = BinarySearchTree()
+
     def shuffle_list(self, ls):
         shuffle(ls)
         return ls
 
     def test_size(self):
         # Size starts at 0
-        self.bst = BinarySearchTree()
-        self.assertEqual(self.bst.size(), 0)
+        self.assertEqual(self.fixture.size(), 0)
         # Doing a put increases the size to 1
-        self.bst.put("one", 1)
-        self.assertEqual(self.bst.size(), 1)
+        self.fixture.put("one", 1)
+        self.assertEqual(self.fixture.size(), 1)
         # Putting a key that is already in doesn't change size
-        self.bst.put("one", 1)
-        self.assertEqual(self.bst.size(), 1)
-        self.bst.put("one", 2)
-        self.assertEqual(self.bst.size(), 1)
+        self.fixture.put("one", 1)
+        self.assertEqual(self.fixture.size(), 1)
+        self.fixture.put("one", 2)
+        self.assertEqual(self.fixture.size(), 1)
 
-        self.bst = BinarySearchTree()
+        self.fixture = BinarySearchTree()
         size = 0
         for pair in self.key_val:
             k, v = pair
-            self.bst.put(k, v)
+            self.fixture.put(k, v)
             size += 1
-            self.assertEqual(self.bst.size(), size)
+            self.assertEqual(self.fixture.size(), size)
 
         shuffled = self.shuffle_list(self.key_val[:])
-
-        self.bst = BinarySearchTree()
+        self.fixture = BinarySearchTree()
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
+            self.fixture.put(k, v)
 
-        self.assertEqual(self.bst.size(), size)
+        self.assertEqual(self.fixture.size(), size)
 
     def test_LCA(self):
-        self.bst = BinarySearchTree()
         for pair in self.key_val2:
             k, v = pair
-            self.bst.put(k, v)
-        self.assertEquals(4, self.bst.LCA(self.bst.root, 1, 9).val)
+            self.fixture.put(k, v)
+        self.assertEquals(4, self.fixture.LCA(self.fixture.root, 1, 9).val)
+        
+    def test_first_common_ancestor(self):
+        input=[1,2,3,4,5,6,7,8]
+        root = self.fixture.create_minimal_bst_tree(input, 0, len(input) - 1)
+        self.assertEqual(2, self.fixture.first_common_ancestor(root, root.left.left, root.left.right))
 
-    def test_is_balanced(self):
-        self.bst = BinarySearchTree()
+    def is_balanced_bf(self):
         for pair in self.balanced:
             k, v = pair
-            self.bst.put(k, v)
-        self.assertEquals(True, self.bst.is_balanced(self.bst.root).balanced)
+            self.fixture.put(k, v)
+        self.assertTrue(self.fixture.is_balanced_bf(self.fixture.root))
 
-    def test_is_not_balanced(self):
-        self.bst = BinarySearchTree()
+    def test_is_not_balanced_bf(self):
         for pair in self.key_val2:
             k, v = pair
-            self.bst.put(k, v)
-        self.assertEquals(False, self.bst.is_balanced(self.bst.root).balanced)
+            self.fixture.put(k, v)
+        self.assertFalse(self.fixture.is_balanced_bf(self.fixture.root))
+
+    def test_is_balanced(self):
+        for pair in self.balanced:
+            k, v = pair
+            self.fixture.put(k, v)
+        self.assertEquals(True, self.fixture.is_balanced(self.fixture.root).balanced)
+
+    def test_is_not_balanced(self):
+        for pair in self.key_val2:
+            k, v = pair
+            self.fixture.put(k, v)
+        self.assertEquals(False, self.fixture.is_balanced(self.fixture.root).balanced)
 
     def test_is_empty(self):
-        self.bst = BinarySearchTree()
-        self.assertTrue(self.bst.is_empty())
-        self.bst.put("a", 1)
-        self.assertFalse(self.bst.is_empty())
+        self.assertTrue(self.fixture.is_empty())
+        self.fixture.put("a", 1)
+        self.assertFalse(self.fixture.is_empty())
 
     def test_get(self):
-        self.bst = BinarySearchTree()
         # Getting a key not in BST returns None
-        self.assertEqual(self.bst.get("one"), None)
+        self.assertEqual(self.fixture.get("one"), None)
 
         # Get with a present key returns proper value
-        self.bst.put("one", 1)
-        self.assertEqual(self.bst.get("one"), 1)
+        self.fixture.put("one", 1)
+        self.assertEqual(self.fixture.get("one"), 1)
 
-        self.bst = BinarySearchTree()
         for pair in self.key_val:
             k, v = pair
-            self.bst.put(k, v)
-            self.assertEqual(self.bst.get(k), v)
+            self.fixture.put(k, v)
+            self.assertEqual(self.fixture.get(k), v)
 
         shuffled = self.shuffle_list(self.key_val[:])
 
-        self.bst = BinarySearchTree()
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
-            self.assertEqual(self.bst.get(k), v)
+            self.fixture.put(k, v)
+            self.assertEqual(self.fixture.get(k), v)
 
     def test_contains(self):
-        self.bst = BinarySearchTree()
-        self.assertFalse(self.bst.contains("a"))
-        self.bst.put("a", 1)
-        self.assertTrue(self.bst.contains("a"))
+        self.assertFalse(self.fixture.contains("a"))
+        self.fixture.put("a", 1)
+        self.assertTrue(self.fixture.contains("a"))
 
     def test_put(self):
-        self.bst = BinarySearchTree()
-
         # When BST is empty first put becomes root
-        self.bst.put("bbb", 1)
-        self.assertEqual(self.bst.root.key, "bbb")
-        self.assertEqual(self.bst.root.left, None)
+        self.fixture.put("bbb", 1)
+        self.assertEqual(self.fixture.root.key, "bbb")
+        self.assertEqual(self.fixture.root.left, None)
 
         # Adding a key greater than root doesn't update the left tree
         # but does update the right
-        self.bst.put("ccc", 2)
-        self.assertEqual(self.bst.root.key, "bbb")
-        self.assertEqual(self.bst.root.left, None)
-        self.assertEqual(self.bst.root.right.key, "ccc")
+        self.fixture.put("ccc", 2)
+        self.assertEqual(self.fixture.root.key, "bbb")
+        self.assertEqual(self.fixture.root.left, None)
+        self.assertEqual(self.fixture.root.right.key, "ccc")
 
-        self.bst = BinarySearchTree()
-        self.bst.put("bbb", 1)
+        self.fixture = BinarySearchTree()
+        self.fixture.put("bbb", 1)
         # Adding a key less than root doesn't update the right tree
         # but does update the left
-        self.bst.put("aaa", 2)
-        self.assertEqual(self.bst.root.key, "bbb")
-        self.assertEqual(self.bst.root.right, None)
-        self.assertEqual(self.bst.root.left.key, "aaa")
+        self.fixture.put("aaa", 2)
+        self.assertEqual(self.fixture.root.key, "bbb")
+        self.assertEqual(self.fixture.root.right, None)
+        self.assertEqual(self.fixture.root.left.key, "aaa")
 
-        self.bst = BinarySearchTree()
+        self.fixture = BinarySearchTree()
         size = 0
         for pair in self.key_val:
             k, v = pair
-            self.bst.put(k, v)
+            self.fixture.put(k, v)
             size += 1
-            self.assertEqual(self.bst.get(k), v)
-            self.assertEqual(self.bst.size(), size)
-
-        self.bst = BinarySearchTree()
+            self.assertEqual(self.fixture.get(k), v)
+            self.assertEqual(self.fixture.size(), size)
 
         shuffled = self.shuffle_list(self.key_val[:])
-
+        self.fixture = BinarySearchTree()
         size = 0
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
+            self.fixture.put(k, v)
             size += 1
-            self.assertEqual(self.bst.get(k), v)
-            self.assertEqual(self.bst.size(), size)
+            self.assertEqual(self.fixture.get(k), v)
+            self.assertEqual(self.fixture.size(), size)
 
     def test_min_key(self):
-        self.bst = BinarySearchTree()
         for pair in self.key_val[::-1]:
             k, v = pair
-            self.bst.put(k, v)
-            self.assertEqual(self.bst.min_key(), k)
+            self.fixture.put(k, v)
+            self.assertEqual(self.fixture.min_key(), k)
 
         shuffled = self.shuffle_list(self.key_val[:])
 
-        self.bst = BinarySearchTree()
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
-        self.assertEqual(self.bst.min_key(), "a")
+            self.fixture.put(k, v)
+        self.assertEqual(self.fixture.min_key(), "a")
 
     def test_max_key(self):
-        self.bst = BinarySearchTree()
         for pair in self.key_val:
             k, v = pair
-            self.bst.put(k, v)
-            self.assertEqual(self.bst.max_key(), k)
+            self.fixture.put(k, v)
+            self.assertEqual(self.fixture.max_key(), k)
 
         shuffled = self.shuffle_list(self.key_val[:])
 
-        self.bst = BinarySearchTree()
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
-        self.assertEqual(self.bst.max_key(), "i")
+            self.fixture.put(k, v)
+        self.assertEqual(self.fixture.max_key(), "i")
 
     def test_floor_key(self):
-        self.bst = BinarySearchTree()
-        self.assertEqual(self.bst.floor_key("a"), None)
-        self.bst.put("a", 1)
-        self.bst.put("c", 3)
-        self.bst.put("e", 5)
-        self.bst.put("g", 7)
-        self.assertEqual(self.bst.floor_key("a"), "a")
-        self.assertEqual(self.bst.floor_key("b"), "a")
-        self.assertEqual(self.bst.floor_key("g"), "g")
-        self.assertEqual(self.bst.floor_key("h"), "g")
+        self.assertEqual(self.fixture.floor_key("a"), None)
+        self.fixture.put("a", 1)
+        self.fixture.put("c", 3)
+        self.fixture.put("e", 5)
+        self.fixture.put("g", 7)
+        self.assertEqual(self.fixture.floor_key("a"), "a")
+        self.assertEqual(self.fixture.floor_key("b"), "a")
+        self.assertEqual(self.fixture.floor_key("g"), "g")
+        self.assertEqual(self.fixture.floor_key("h"), "g")
 
-        self.bst = BinarySearchTree()
-        self.bst.put("c", 3)
-        self.bst.put("e", 5)
-        self.bst.put("a", 1)
-        self.bst.put("g", 7)
-        self.assertEqual(self.bst.floor_key("a"), "a")
-        self.assertEqual(self.bst.floor_key("b"), "a")
-        self.assertEqual(self.bst.floor_key("g"), "g")
-        self.assertEqual(self.bst.floor_key("h"), "g")
+        self.fixture.put("c", 3)
+        self.fixture.put("e", 5)
+        self.fixture.put("a", 1)
+        self.fixture.put("g", 7)
+        self.assertEqual(self.fixture.floor_key("a"), "a")
+        self.assertEqual(self.fixture.floor_key("b"), "a")
+        self.assertEqual(self.fixture.floor_key("g"), "g")
+        self.assertEqual(self.fixture.floor_key("h"), "g")
 
     def test_ceiling_key(self):
-        self.bst = BinarySearchTree()
-        self.assertEqual(self.bst.ceiling_key("a"), None)
-        self.bst.put("a", 1)
-        self.bst.put("c", 3)
-        self.bst.put("e", 5)
-        self.bst.put("g", 7)
-        self.assertEqual(self.bst.ceiling_key("a"), "a")
-        self.assertEqual(self.bst.ceiling_key("b"), "c")
-        self.assertEqual(self.bst.ceiling_key("g"), "g")
-        self.assertEqual(self.bst.ceiling_key("f"), "g")
+        self.assertEqual(self.fixture.ceiling_key("a"), None)
+        self.fixture.put("a", 1)
+        self.fixture.put("c", 3)
+        self.fixture.put("e", 5)
+        self.fixture.put("g", 7)
+        self.assertEqual(self.fixture.ceiling_key("a"), "a")
+        self.assertEqual(self.fixture.ceiling_key("b"), "c")
+        self.assertEqual(self.fixture.ceiling_key("g"), "g")
+        self.assertEqual(self.fixture.ceiling_key("f"), "g")
 
-        self.bst = BinarySearchTree()
-        self.bst.put("c", 3)
-        self.bst.put("e", 5)
-        self.bst.put("a", 1)
-        self.bst.put("g", 7)
-        self.assertEqual(self.bst.ceiling_key("a"), "a")
-        self.assertEqual(self.bst.ceiling_key("b"), "c")
-        self.assertEqual(self.bst.ceiling_key("g"), "g")
-        self.assertEqual(self.bst.ceiling_key("f"), "g")
+        self.fixture.put("c", 3)
+        self.fixture.put("e", 5)
+        self.fixture.put("a", 1)
+        self.fixture.put("g", 7)
+        self.assertEqual(self.fixture.ceiling_key("a"), "a")
+        self.assertEqual(self.fixture.ceiling_key("b"), "c")
+        self.assertEqual(self.fixture.ceiling_key("g"), "g")
+        self.assertEqual(self.fixture.ceiling_key("f"), "g")
 
     def test_select_key(self):
         shuffled = self.shuffle_list(self.key_val[:])
-
-        self.bst = BinarySearchTree()
-        self.assertEqual(self.bst.select_key(0), None)
+        self.assertEqual(self.fixture.select_key(0), None)
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
-        self.assertEqual(self.bst.select_key(0), "a")
-        self.assertEqual(self.bst.select_key(1), "b")
-        self.assertEqual(self.bst.select_key(2), "c")
+            self.fixture.put(k, v)
+        self.assertEqual(self.fixture.select_key(0), "a")
+        self.assertEqual(self.fixture.select_key(1), "b")
+        self.assertEqual(self.fixture.select_key(2), "c")
 
     def test_rank(self):
-        self.bst = BinarySearchTree()
-        self.assertEqual(self.bst.rank("a"), None)
-
+        self.assertEqual(self.fixture.rank("a"), None)
         for pair in self.key_val:
             k, v = pair
-            self.bst.put(k, v)
+            self.fixture.put(k, v)
 
-        self.assertEqual(self.bst.rank("a"), 0)
-        self.assertEqual(self.bst.rank("b"), 1)
-        self.assertEqual(self.bst.rank("c"), 2)
-        self.assertEqual(self.bst.rank("d"), 3)
+        self.assertEqual(self.fixture.rank("a"), 0)
+        self.assertEqual(self.fixture.rank("b"), 1)
+        self.assertEqual(self.fixture.rank("c"), 2)
+        self.assertEqual(self.fixture.rank("d"), 3)
 
+        self.fixture = BinarySearchTree()
         shuffled = self.shuffle_list(self.key_val[:])
-        self.bst = BinarySearchTree()
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
+            self.fixture.put(k, v)
 
-        self.assertEqual(self.bst.rank("a"), 0)
-        self.assertEqual(self.bst.rank("b"), 1)
-        self.assertEqual(self.bst.rank("c"), 2)
-        self.assertEqual(self.bst.rank("d"), 3)
+        self.assertEqual(self.fixture.rank("a"), 0)
+        self.assertEqual(self.fixture.rank("b"), 1)
+        self.assertEqual(self.fixture.rank("c"), 2)
+        self.assertEqual(self.fixture.rank("d"), 3)
 
     def test_delete_min(self):
-        self.bst = BinarySearchTree()
         for pair in self.key_val:
             k, v = pair
-            self.bst.put(k, v)
-        for i in range(self.bst.size() - 1):
-            self.bst.delete_min()
-            self.assertEqual(self.bst.min_key(), self.key_val[i+1][0])
-        self.bst.delete_min()
-        self.assertEqual(self.bst.min_key(), None)
+            self.fixture.put(k, v)
+        for i in range(self.fixture.size() - 1):
+            self.fixture.delete_min()
+            self.assertEqual(self.fixture.min_key(), self.key_val[i + 1][0])
+        self.fixture.delete_min()
+        self.assertEqual(self.fixture.min_key(), None)
 
+        self.fixture = BinarySearchTree()
         shuffled = self.shuffle_list(self.key_val[:])
-        self.bst = BinarySearchTree()
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
-        for i in range(self.bst.size() - 1):
-            self.bst.delete_min()
-            self.assertEqual(self.bst.min_key(), self.key_val[i+1][0])
-        self.bst.delete_min()
-        self.assertEqual(self.bst.min_key(), None)
+            self.fixture.put(k, v)
+        for i in range(self.fixture.size() - 1):
+            self.fixture.delete_min()
+            self.assertEqual(self.fixture.min_key(), self.key_val[i + 1][0])
+        self.fixture.delete_min()
+        self.assertEqual(self.fixture.min_key(), None)
 
     def test_delete_max(self):
-        self.bst = BinarySearchTree()
         for pair in self.key_val:
             k, v = pair
-            self.bst.put(k, v)
-        for i in range(self.bst.size() - 1, 0, -1):
-            self.bst.delete_max()
-            self.assertEqual(self.bst.max_key(), self.key_val[i-1][0])
-        self.bst.delete_max()
-        self.assertEqual(self.bst.max_key(), None)
+            self.fixture.put(k, v)
+        for i in range(self.fixture.size() - 1, 0, -1):
+            self.fixture.delete_max()
+            self.assertEqual(self.fixture.max_key(), self.key_val[i - 1][0])
+        self.fixture.delete_max()
+        self.assertEqual(self.fixture.max_key(), None)
 
+        self.fixture = BinarySearchTree()
         shuffled = self.shuffle_list(self.key_val[:])
-
         for pair in shuffled:
             k, v = pair
-            self.bst.put(k, v)
-        for i in range(self.bst.size() - 1, 0, -1):
-            self.bst.delete_max()
-            self.assertEqual(self.bst.max_key(), self.key_val[i-1][0])
-        self.bst.delete_max()
-        self.assertEqual(self.bst.max_key(), None)
+            self.fixture.put(k, v)
+        for i in range(self.fixture.size() - 1, 0, -1):
+            self.fixture.delete_max()
+            self.assertEqual(self.fixture.max_key(), self.key_val[i - 1][0])
+        self.fixture.delete_max()
+        self.assertEqual(self.fixture.max_key(), None)
 
     def test_delete(self):
         # delete key from an empty bst
-        self.bst = BinarySearchTree()
-        self.bst.delete("a")
-        self.assertEqual(self.bst.root, None)
-        self.assertEqual(self.bst.size(), 0)
-
+        self.fixture.delete("a")
+        self.assertEqual(self.fixture.root, None)
+        self.assertEqual(self.fixture.size(), 0)
         # delete key not present in bst
-        self.bst = BinarySearchTree()
-        self.bst.put("a", 1)
-        self.bst.delete("b")
-        self.assertEqual(self.bst.root.key, "a")
-        self.assertEqual(self.bst.size(), 1)
-
+        self.fixture.put("a", 1)
+        self.fixture.delete("b")
+        self.assertEqual(self.fixture.root.key, "a")
+        self.assertEqual(self.fixture.size(), 1)
         # delete key when bst only contains one key
-        self.bst = BinarySearchTree()
-        self.bst.put("a", 1)
-        self.assertEqual(self.bst.root.key, "a")
-        self.bst.delete("a")
-        self.assertEqual(self.bst.root, None)
-        self.assertEqual(self.bst.size(), 0)
-
+        self.fixture.delete("a")
+        self.assertEqual(self.fixture.root, None)
+        self.assertEqual(self.fixture.size(), 0)
         # delete parent key when it only has a left child
-        self.bst = BinarySearchTree()
-        self.bst.put("b", 2)
-        self.bst.put("a", 1)
-        self.assertEqual(self.bst.root.left.key, "a")
-        self.bst.delete("b")
-        self.assertEqual(self.bst.root.key, "a")
-        self.assertEqual(self.bst.size(), 1)
-
+        self.fixture.put("b", 2)
+        self.fixture.put("a", 1)
+        self.assertEqual(self.fixture.root.left.key, "a")
+        self.fixture.delete("b")
+        self.assertEqual(self.fixture.root.key, "a")
+        self.assertEqual(self.fixture.size(), 1)
         # delete parent key when it only has a right child
-        self.bst = BinarySearchTree()
-        self.bst.put("a", 1)
-        self.bst.put("b", 2)
-        self.assertEqual(self.bst.root.right.key, "b")
-        self.bst.delete("a")
-        self.assertEqual(self.bst.root.key, "b")
-        self.assertEqual(self.bst.size(), 1)
-
+        self.fixture.put("b", 2)
+        self.assertEqual(self.fixture.root.right.key, "b")
+        self.fixture.delete("a")
+        self.assertEqual(self.fixture.root.key, "b")
+        self.assertEqual(self.fixture.size(), 1)
         # delete left child key
-        self.bst = BinarySearchTree()
-        self.bst.put("b", 2)
-        self.bst.put("a", 1)
-        self.assertEqual(self.bst.root.left.key, "a")
-        self.bst.delete("a")
-        self.assertEqual(self.bst.root.key, "b")
-        self.assertEqual(self.bst.size(), 1)
-
+        self.fixture.put("a", 1)
+        self.assertEqual(self.fixture.root.left.key, "a")
+        self.fixture.delete("a")
+        self.assertEqual(self.fixture.root.key, "b")
+        self.assertEqual(self.fixture.size(), 1)
         # delete right child key
-        self.bst = BinarySearchTree()
-        self.bst.put("a", 1)
-        self.bst.put("b", 2)
-        self.assertEqual(self.bst.root.right.key, "b")
-        self.bst.delete("b")
-        self.assertEqual(self.bst.root.key, "a")
-        self.assertEqual(self.bst.size(), 1)
+        self.fixture.put("a", 1)
+        self.fixture.put("c", 3)
+        self.assertEqual(self.fixture.root.right.key, "c")
+        self.fixture.delete("b")
+        self.assertEqual(self.fixture.root.key, "c")
+        self.assertEqual(self.fixture.size(), 2)
 
-        # delete parent key when it has a left and right child
-        self.bst = BinarySearchTree()
-        self.bst.put("b", 2)
-        self.bst.put("a", 1)
-        self.bst.put("c", 3)
-        self.bst.delete("b")
-        self.assertEqual(self.bst.root.key, "c")
-        self.assertEqual(self.bst.size(), 2)
+        self.fixture.put("b", 2)
+        self.fixture.delete("b")
+        self.assertEqual(self.fixture.root.key, "c")
+        self.assertEqual(self.fixture.size(), 2)
 
     def test_keys(self):
-        self.bst = BinarySearchTree()
-        self.assertEqual(self.bst.keys(), [])
+        self.assertEqual(self.fixture.keys(), [])
 
         for pair in self.key_val2:
             k, v = pair
-            self.bst.put(k, v)
+            self.fixture.put(k, v)
 
         self.assertEqual(
-            self.bst.keys(),
+            self.fixture.keys(),
             ["a", "b", "c", "d", "e", "f", "g", "h", "i"]
         )
 
     def test_create_minimal_bst_tree(self):
         input=[1,2,3,4,5,6,7,8]
-        self.bst = BinarySearchTree()
-        actual = self.bst.create_minimal_bst_tree(input, 0, len(input)-1)
+        
+        actual = self.fixture.create_minimal_bst_tree(input, 0, len(input) - 1)
         self.assertEqual(2, actual.left.val)
         self.assertEqual(3, actual.left.right.val)
-        (bfs, level) = self.bst.bfs_with_level(actual)
+        (bfs, level) = self.fixture.bfs_with_level(actual)
         self.assertEqual([4,2,6,1,3,5,7,8],bfs)
         self.assertEqual(4,level)
 
     def test_list_of_depths(self):
-        input=[1,2,3,4,5,6,7,8]
-        self.bst = BinarySearchTree()
-        input = self.bst.create_minimal_bst_tree(input, 0, len(input)-1)
-        actual = self.bst.list_of_depths(input)
+        array=[1,2,3,4,5,6,7,8]
+        input = self.fixture.create_minimal_bst_tree(array, 0, len(array) - 1)
+        actual = self.fixture.list_of_depths(input)
         self.assertEqual([4], actual[0].head.getNodes(list()))
         self.assertEqual([2,6], actual[1].head.getNodes(list()))
         self.assertEqual([1,3,5,7], actual[2].head.getNodes(list()))
         self.assertEqual([8], actual[3].head.getNodes(list()))
+
+    def test_is_not_bst(self):
+        self.fixture.root = tn(0, 3)
+        self.fixture.root.left = tn(0, 2)
+        self.fixture.root.right = tn(0, 2)
+        self.assertFalse(self.fixture.is_bst(self.fixture.root))
+
+    def test_is_bst(self):
+        input=[1,2,3,4,5,6,7,8]
+        self.fixture.create_minimal_bst_tree(input, 0, len(input) - 1)
+        self.assertTrue(self.fixture.is_bst(self.fixture.root))
 
 class TestGraph(unittest.TestCase):
     def setUp(self):
@@ -819,11 +802,15 @@ class TestGraph(unittest.TestCase):
 
     def test_bfs(self):
         self.fixture.bfs(self.graph.get_node()[0])
-        self.assertEquals(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], self.fixture.vertices)
+        self.assertEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], self.fixture.vertices)
+
+    def test_dfs_iterative(self):
+        self.fixture.dfs_iterative(self.graph.get_node()[0])
+        self.assertEqual(['A', 'D', 'C', 'H', 'G', 'F', 'J', 'I', 'B', 'E'], self.fixture.vertices)
 
     def test_dfs(self):
         self.fixture.dfs(self.graph.get_node()[0])
-        self.assertEquals(['A', 'B', 'E', 'C', 'F', 'I', 'J', 'G', 'H', 'D'], self.fixture.vertices)
+        self.assertEqual(['A', 'B', 'E', 'C', 'F', 'I', 'J', 'G', 'H', 'D'], self.fixture.vertices)
 
     def build_graph(self):
         g = Graph()
@@ -849,14 +836,12 @@ class TestGraph(unittest.TestCase):
 
         tmp[2].add_child_node(tmp[5])
         tmp[2].add_child_node(tmp[6])
-        tmp[2].add_child_node(tmp[6])
         tmp[2].add_child_node(tmp[7])
 
         tmp[3].add_child_node(tmp[0])
 
         tmp[4].add_child_node(tmp[1])
 
-        tmp[5].add_child_node(tmp[1])
         tmp[5].add_child_node(tmp[8])
         tmp[5].add_child_node(tmp[9])
 
@@ -870,6 +855,88 @@ class TestBinaryTree(unittest.TestCase):
         self.root = self.fixture.build_tree()
 
     def test_serialize_tree(self):
+        from collections import deque
         out = []
         self.fixture.serialize_preorder(self.root, out)
-        self.assertEqual(['1', '2', '#', '#', '3', '#', '#'], out)
+        self.assertEquals(['1', '2', '#', '#', '3', '#', '#'], out)
+        newroot=self.fixture.deserialize_pretree(deque(out))
+        self.assertEquals(self.root.val, newroot.val)
+        self.assertEquals(self.root.left.val, newroot.left.val)
+        self.assertEquals(self.root.right.val, newroot.right.val)
+        out=[]
+        self.fixture.serialize_inorder(self.root, out)
+        self.assertEquals(['2', '#', '#', '1', '3', '#', '#'], out)
+        out=[]
+        self.fixture.serialize_postorder(self.root, out)
+        self.assertEquals(['2', '#', '#', '3', '#', '#', '1'], out)
+
+    def test_first_common_ancestor(self):
+        self.root.left.left = tn(0, 5)
+        self.root.left.right = tn(0, 5)
+        self.root.right.right = tn(0, 5)
+        self.assertEqual(1, self.fixture.first_common_ancestor(self.root, self.root.left.left, self.root.right.right).val)
+
+    def test_check_subtree(self):
+        t1 = tn(0, 0)
+        t1.left = tn(0, 1)
+        t1.left.left = tn(0, 2)
+        t1.left.right = tn(0, 3)
+
+        t2 = tn(0, 1)
+        t2.left = tn(0, 2)
+        t2.right = tn(0, 3)
+        self.assertTrue(self.fixture.check_subtree(t1,t2))
+
+        t1.left.left = None
+        self.assertFalse(self.fixture.check_subtree(t1,t2))
+
+    def test_path_sum(self):
+        tree = tn(0, 0)
+        tree.left = tn(0, -1)
+        tree.left.left = tn(0, 2)
+        tree.left.right = tn(0, 3)
+
+        self.assertEqual(1, self.fixture.path_sum(tree, 1, 0))
+
+    def test_path_sum_result(self):
+        tree = tn(0, 0)
+        tree.left = tn(0, -1)
+        tree.left.left = tn(0, 2)
+        tree.left.right = tn(0, 3)
+        tree.right = tn(0, 1)
+        tree.right.left = tn(0, 1)
+        tree.right.right = tn(0, 2)
+
+        result=[]
+        self.assertEqual([[0, -1, 2], [0, 1]], self.fixture.path_sum_result(tree, 1, 0, result, []))
+
+class TestGraphBuildOrder(unittest.TestCase):
+    def setUp(self):
+        projects=["a","b","c","d","e","f"]
+        dependencies = (
+            ("a", "d"),
+            ("f", "b"),
+            ("b", "d"),
+            ("f", "a"),
+            ("d", "c")
+        )
+        graph = self.build_graph(projects, dependencies)
+        self.fixture = BuildOrder(graph)
+
+    def test_build_order(self):
+        expected=['f','e','b','a','d','c']
+        actual = self.fixture.get_project_order(self.fixture.graph.nodes)
+        for i in range(len(actual)):
+            self.assertTrue(expected[i]==actual.pop())
+
+    def build_graph(self, projects, dependencies):
+        graph = bo_graph()
+        for project in projects:
+            graph.create_node(project)
+
+        for dependency in dependencies:
+            first=dependency[0]
+            second=dependency[1]
+            graph.add_edge(first,second)
+
+        return graph
