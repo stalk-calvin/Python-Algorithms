@@ -38,7 +38,7 @@ class StringsTest(unittest.TestCase):
 
     def test_first_uniq_string_manual(self):
         input = "eelvinlee"
-        actual = self.fixture.firstUniqChar(input)
+        actual = self.fixture.firstUniqCharManual(input)
         self.assertEqual('v', actual)
 
     def test_is_isomorphic(self):

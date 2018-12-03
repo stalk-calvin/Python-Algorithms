@@ -23,13 +23,13 @@ class BinaryTree(object):
     def find_inorder_wrapper(self, root):
         result = []
         if root is None: return result
-        return self.find_inorder(root, result)
+        return self.__find_inorder(root, result)
 
-    def find_inorder(self, root, result):
+    def __find_inorder(self, root, result):
         if root is None: return result
-        self.find_inorder(root.left, result)
+        self.__find_inorder(root.left, result)
         result.append(root.val)
-        self.find_inorder(root.right, result)
+        self.__find_inorder(root.right, result)
         return result
 
     def serialize_preorder(self, root, out):
@@ -565,8 +565,7 @@ class BinarySearchTree(object):
     def bfs_with_level(self, root):
         result=[]
         if root==None:
-            return result
-
+            return None
 
         q = deque()
         q.append(root)
@@ -592,14 +591,14 @@ class BinarySearchTree(object):
 
         return (result, level)
 
-    def depth(self, root):
+    def level(self, root):
         if root==None:
             return 0
         elif root.left==None and root.right==None:
             return 1
         else:
-            depthLeft = 1+self.depth(root.left)
-            depthRight = 1+self.depth(root.right)
+            depthLeft = 1+self.level(root.left)
+            depthRight = 1+self.level(root.right)
             if depthLeft > depthRight:
                 return depthLeft
             else:

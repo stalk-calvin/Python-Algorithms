@@ -764,14 +764,23 @@ class TestBinarySearchTree(unittest.TestCase):
         actual = self.fixture.create_minimal_bst_tree(input, 0, len(input) - 1)
         self.assertEqual(2, actual.left.val)
         self.assertEqual(3, actual.left.right.val)
+        self.assertEqual(None, self.fixture.bfs_with_level(None))
         (bfs, level) = self.fixture.bfs_with_level(actual)
         self.assertEqual([4,2,6,1,3,5,7,8],bfs)
         self.assertEqual(4,level)
+
+    def test_depth(self):
+        input = [1, 2, 3, 4, 5, 6, 7, 8]
+        tree = self.fixture.create_minimal_bst_tree(input, 0, len(input) - 1)
+        self.assertEqual(0, self.fixture.level(None))
+        self.assertEqual(1, self.fixture.level(tn(0,1)))
+        self.assertEqual(4, self.fixture.level(tree))
 
     def test_list_of_depths(self):
         array=[1,2,3,4,5,6,7,8]
         input = self.fixture.create_minimal_bst_tree(array, 0, len(array) - 1)
         actual = self.fixture.list_of_depths(input)
+        self.assertEqual([4], self.fixture.list_of_depths(tn(0, 4))[0].getNodes(list()))
         self.assertEqual([4], actual[0].head.getNodes(list()))
         self.assertEqual([2,6], actual[1].head.getNodes(list()))
         self.assertEqual([1,3,5,7], actual[2].head.getNodes(list()))
@@ -853,6 +862,9 @@ class TestBinaryTree(unittest.TestCase):
     def setUp(self):
         self.fixture = BinaryTree()
         self.root = self.fixture.build_tree()
+
+    def test_inorder(self):
+        self.assertEqual([2, 1, 3], self.fixture.find_inorder_wrapper(self.root))
 
     def test_serialize_tree(self):
         from collections import deque
