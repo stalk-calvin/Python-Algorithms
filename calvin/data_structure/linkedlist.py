@@ -205,11 +205,8 @@ class LinkedList(object):
         while fast and fast.next:
             slow=slow.next
             fast=fast.next.next
-            if(slow==fast):
+            if(slow is fast):
                 break
-
-        if not fast or not fast.next:
-            return None
 
         slow=self.head
         while slow != fast:
@@ -218,14 +215,59 @@ class LinkedList(object):
 
         return fast
 
-    # def ll_from_list(self, input):
-    #     if input==None:
-    #         return None
-    #
-    #     l=ListNode(input[0])
-    #     rv=l
-    #     for index in range(1,len(input)):
-    #         l.next = ListNode(input[index])
-    #         l = l.next
-    #
-    #     return rv
+class SortedLinkedList(object):
+    def __init__(self):
+        self.head = None
+        self.size = 0
+
+    def length(self):
+        return self.size
+
+    def insert(self, n):
+        curr=self.head
+        if curr is None:
+            nn= ListNode(n)
+            self.head=nn
+            return
+
+        if curr.value > n:
+            nn=ListNode(n, next=curr)
+            self.head=nn
+            return
+
+        while curr.next is not None:
+            if curr.next.value > n:
+                break
+            curr=curr.next
+
+        nn=ListNode(n, next=curr.next)
+        curr.next=nn
+        self.size += 1
+
+        return
+
+    def delete_head_node(self):
+        nn=self.head
+        self.head=nn.next
+        self.size-=1
+
+    def search_node(self, n):
+        if self.head is None:
+            return None
+
+        nn = self.head
+        while nn:
+            if nn.value == n:
+                return nn
+            nn = nn.next
+
+        return None
+
+    def __repr__(self):
+        return self.__helper(self.head, "").lstrip()
+
+    def __helper(self, current, result):
+        if current is None:
+            return result
+        result += ' ' + str(current.value)
+        return self.__helper(current.next, result)

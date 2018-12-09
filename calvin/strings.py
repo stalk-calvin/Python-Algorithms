@@ -318,16 +318,17 @@ class Strings(object):
         return result.strip()
 
     def permutation(self, str):
-        self.__permute(str, "")
+        permuted = []
+        self.__permute(str, "", permuted)
+        return permuted
 
-    permuted=[]
-    def __permute(self, str, prefix):
+    def __permute(self, str, prefix, permuted):
         if len(str) == 0:
-            self.permuted.append(prefix)
+            permuted.append(prefix)
         else:
             for i in range(len(str)):
                 rem = str[0:i] + str[i+1:]
-                self.__permute(rem, prefix+str[i])
+                self.__permute(rem, prefix+str[i], permuted)
 
     def isUnique(self,s):
         t=set()
@@ -345,7 +346,7 @@ class Strings(object):
             if t[i]:
                 return False
             t[i] = True
-        return False
+        return True
 
     def checkPermutation(self, s1, s2):
         if s1 == None or s2 == None:

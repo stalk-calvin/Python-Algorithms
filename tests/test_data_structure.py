@@ -3,9 +3,9 @@ from random import shuffle
 import unittest
 
 from calvin.data_structure.graph.tree import BinaryTree, BinarySearchTree, Node as tn
-from calvin.data_structure.queue import Queue, QueueUsingStacks, QueueUsingNodes
+from calvin.data_structure.queue import Queue, QueueUsingStacks, QueueUsingNodes, CircularQueue
 from calvin.data_structure.stack import Stack, StackUsingQueue, StackUsingNodes, ThreeStacks, StackMin, SetOfStacks
-from calvin.data_structure.linkedlist import ListNode, LinkedList
+from calvin.data_structure.linkedlist import ListNode, LinkedList, SortedLinkedList
 from calvin.data_structure.graph.graph import Graph, Node, Traversals
 from calvin.data_structure.graph.graph_build_order import BuildOrder, Graph as bo_graph
 
@@ -21,6 +21,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(['D', 'A', 'B', 'C'], self.fixture.head.getNodes(list()))
 
     def test_find_node(self):
+        self.assertEqual(None, self.fixture.find(None))
         actual = self.fixture.find('C')
         self.assertEqual('C', actual.value)
 
@@ -54,7 +55,8 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(['B'], result)
 
     def test_getKthLastNodes(self):
-        self.assertEquals('B', self.fixture.getKthLastUsingNodes(self.fixture.head, 2).value)
+        self.assertEqual(None, self.fixture.getKthLastUsingNodes(None, 5))
+        self.assertEqual('B', self.fixture.getKthLastUsingNodes(self.fixture.head, 2).value)
 
     def test_partition(self):
         first=ListNode(0)
@@ -64,7 +66,8 @@ class TestLinkedList(unittest.TestCase):
             first.next = second
             first = second
         actual = self.fixture.partition(head, 5)
-        self.assertEquals([4, 3, 2, 1, 0, 9, 8, 7, 6, 5], actual.getNodes(list()))
+        self.assertEqual([4, 3, 2, 1, 0, 9, 8, 7, 6, 5], actual.getNodes(list()))
+        self.assertEqual([5, 6, 7, 8, 9, 0], self.fixture.partition(head, 0).getNodes(list()))
 
     def test_sum_list(self):
         l1 = ListNode(9)
@@ -78,6 +81,7 @@ class TestLinkedList(unittest.TestCase):
         expected = [0, 0, 0, 1]
         print(str(l1.getNodes(list())) + " + " + str(l2.getNodes(list())) + " = " + str(expected))
 
+        self.assertEquals(None, self.fixture.sum_list(None, None, 0))
         self.assertEquals(expected, self.fixture.sum_list(l1,l2,0).getNodes(list()))
 
     def test_palindrome(self):
@@ -87,26 +91,24 @@ class TestLinkedList(unittest.TestCase):
         l1.next.next.next = ListNode(2)
         l1.next.next.next.next = ListNode(1)
 
-        print("Start: " + str(l1.getNodes(list())))
+        print("From: " + str(l1.getNodes(list())))
         self.assertTrue(self.fixture.palindrome(l1))
-
-        print("From: "+str(l1.getNodes(list())))
         self.fixture.delete_middle_node(l1.next.next)
-        print("Reduced: "+str(l1.getNodes(list())))
-
-        self.assertTrue(self.fixture.palindrome(l1))
 
         print("From: "+str(l1.getNodes(list())))
+        self.assertTrue(self.fixture.palindrome(l1))
         self.fixture.delete_middle_node(l1.next.next)
-        print("Reduced: "+str(l1.getNodes(list())))
-
-        self.assertTrue(self.fixture.palindrome(l1))
 
         print("From: "+str(l1.getNodes(list())))
+        self.assertTrue(self.fixture.palindrome(l1))
         self.fixture.delete_middle_node(l1)
         print("Reduced: "+str(l1.getNodes(list())))
 
         self.assertFalse(self.fixture.palindrome(l1))
+        self.fixture.delete_middle_node(l1)
+
+        self.assertFalse(self.fixture.delete_middle_node(l1))
+        self.assertFalse(self.fixture.delete_middle_node(None))
 
     def test_intersection(self):
         first=ListNode(0)
@@ -129,11 +131,36 @@ class TestLinkedList(unittest.TestCase):
         print(l1.getNodes(list()))
         print(l2.getNodes(list()))
 
-        print(self.fixture.intersection(l1,l2).getNodes(list()))
+        self.assertEqual(None, self.fixture.intersection(None, None))
+        self.assertEqual([3, 4, 5, 6, 7], self.fixture.intersection(l1, l2).getNodes(list()))
 
     def test_loop_detection(self):
-        self.fixture.append(0, self.fixture.head)
+        self.fixture.prepend(1)
+        self.fixture.prepend(2)
+        self.fixture.append(0, self.fixture.head.next.next)
         self.assertTrue('A', self.fixture.loop_detection().value)
+
+class TestSortedLinkedList(unittest.TestCase):
+    def setUp(self):
+        self.fixture = SortedLinkedList()
+        self.assertTrue(self.fixture.length()==0)
+
+    def test_operations(self):
+        self.fixture.insert(6)
+        self.fixture.insert(10)
+        self.fixture.insert(3)
+        self.fixture.insert(6)
+        self.fixture.insert(9)
+        self.fixture.insert(6)
+        self.fixture.insert(1)
+        self.fixture.insert(5)
+        self.assertEqual([1, 3, 5, 6, 6, 6, 9, 10], self.fixture.head.getNodes(list()))
+        self.fixture.delete_head_node()
+        self.assertEqual([3, 5, 6, 6, 6, 9, 10], self.fixture.head.getNodes(list()))
+        self.assertEqual(None, self.fixture.search_node(None))
+        self.assertEqual(None, self.fixture.search_node(20))
+        self.assertEqual(9, self.fixture.search_node(9).value)
+        self.assertTrue("3 5 6 6 6 9 10"==str(self.fixture))
 
 class TestQueue(unittest.TestCase):
     def setUp(self):
@@ -169,6 +196,70 @@ class TestQueue(unittest.TestCase):
         self.fixture.dequeue()
         self.assertTrue((self.fixture.isEmpty()))
         self.assertRaises(IndexError, self.fixture.dequeue)
+        self.assertRaises(Exception, self.fixture.peek)
+
+class TestCircularQueue(unittest.TestCase):
+    def setUp(self):
+        self.fixture = CircularQueue()
+        self.assertTrue(self.fixture.isEmpty())
+
+    def test_push_various_types(self):
+        self.fixture.enqueue(6)
+        self.fixture.enqueue(True)
+        self.fixture.enqueue('cat')
+        self.assertEqual(6, self.fixture.peek())
+        self.assertFalse(self.fixture.isEmpty())
+        self.assertEqual(3, self.fixture.size)
+
+    def test_push_pop_multiple_elements(self):
+        self.fixture.enqueue(1)
+        self.fixture.enqueue(2)
+        self.fixture.enqueue(3)
+        self.fixture.enqueue(4)
+        self.fixture.enqueue(5)
+        self.fixture.enqueue(6)
+
+        self.assertEqual(1, self.fixture.peek())
+
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+
+        self.fixture.enqueue(1)
+        self.fixture.enqueue(2)
+        self.fixture.enqueue(3)
+        self.fixture.enqueue(4)
+        self.fixture.enqueue(5)
+
+        self.assertEqual(4, self.fixture.peek())
+
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+        self.fixture.dequeue()
+
+        self.assertTrue(self.fixture.isEmpty())
+
+        self.fixture.enqueue(4)
+        self.fixture.enqueue(5)
+        self.assertEqual(4, self.fixture.peek())
+
+    def test_pop_items_out(self):
+        self.fixture.enqueue(6)
+        self.fixture.enqueue(True)
+        self.fixture.enqueue('cat')
+        self.assertEqual(6, self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertEqual(True, self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertEqual('cat', self.fixture.peek())
+        self.fixture.dequeue()
+        self.assertTrue((self.fixture.isEmpty()))
+        self.assertRaises(Exception, self.fixture.dequeue)
         self.assertRaises(Exception, self.fixture.peek)
 
 class TestQueueUsingStacks(unittest.TestCase):

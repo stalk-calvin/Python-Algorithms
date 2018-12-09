@@ -110,21 +110,39 @@ class StringsTest(unittest.TestCase):
         self.assertEquals("One Billion Five Hundred Ninety Two Million Eight Hundred Thirty Seven Thousand Five Hundred Seventy Two", actual)
 
     def test_permutation(self):
-        self.fixture.permutation("1234")
-        actual = self.fixture.permuted
+        actual = self.fixture.permutation("1234")
         expected = {'1234', '1243', '1324', '1342', '1423', '1432', '2134', '2143', '2314', '2341', '2413', '2431', '3124', '3142', '3214', '3241', '3412', '3421', '4123', '4132', '4213', '4231', '4312', '4321'}
         for item in actual:
             if item not in expected:
                 self.fail("Unexpected value: "+ item)
 
+    def test_unique_string(self):
+        self.assertTrue(self.fixture.isUnique('abcdefg'))
+        self.assertFalse(self.fixture.isUnique('ebedefg'))
+
+    def test_unique_string_english(self):
+        self.assertTrue(self.fixture.isUniqueNoDs('abcdefg'))
+        self.assertFalse(self.fixture.isUniqueNoDs('ebedefg'))
+
+    def test_check_permutation(self):
+        self.assertFalse(self.fixture.checkPermutation(None,None))
+        self.assertFalse(self.fixture.checkPermutation('abcwde','edbca'))
+        self.assertFalse(self.fixture.checkPermutation('abcde','edbcwa'))
+        self.assertTrue(self.fixture.checkPermutation('abcde', 'edbca'))
+
     def test_checkPalindromePermutation(self):
         self.assertTrue(self.fixture.checkPalindromePermutation("Tact Coa"))
 
     def test_one_away(self):
+        self.assertTrue(self.fixture.one_away(None, "p"))
+        self.assertTrue(self.fixture.one_away("a", None))
+        self.assertFalse(self.fixture.one_away(None, None))
+        self.assertTrue(self.fixture.one_away("pales", "pales"))
         self.assertTrue(self.fixture.one_away("pales","pale"))
         self.assertTrue(self.fixture.one_away("ple","pale"))
 
     def test_string_compression(self):
+        self.assertEquals(None,self.fixture.string_compression(None))
         self.assertEquals("a3b1c6a3",self.fixture.string_compression("aaabccccccaaa"))
         self.assertEquals("a", self.fixture.string_compression("a"))
         self.assertEquals("abc", self.fixture.string_compression("abc"))

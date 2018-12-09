@@ -54,12 +54,12 @@ class Numbers(object):
     def sortNumbersBetweenSigns(self, s, sign):
         return sign.join(sorted(s.split(sign)))
 
-    def cantorSet(self,d,n):
-        if n == 0:
-            return (3 ** d) * '+'
-        if d == 0:
-            return '+'
-        return self.cantorSet(d - 1, n - 1) + ' ' * (3 ** (d - 1)) + self.cantorSet(d - 1, n - 1)
+    # def cantorSet(self,d,n):
+    #     if n == 0:
+    #         return (3 ** d) * '+'
+    #     if d == 0:
+    #         return '+'
+    #     return self.cantorSet(d - 1, n - 1) + ' ' * (3 ** (d - 1)) + self.cantorSet(d - 1, n - 1)
 
     def msTodhms(self, ms):
         """
@@ -96,10 +96,10 @@ class Numbers(object):
                 self.findSumRecursively(input, temp, result, target - input[i], i)
                 temp.pop()
 
-    def compareBinToHex(self,b,h):
-        bd=int(b,2)
-        hd=int(h,16)
-        return bd==hd
+    # def compareBinToHex(self,b,h):
+    #     bd=int(b,2)
+    #     hd=int(h,16)
+    #     return bd==hd
 
     def countCoin1d(self,S,m,n):
         table = [0 for k in range(n+1)]
@@ -129,15 +129,71 @@ class Numbers(object):
             return 0
         elif len(input) == 1:
             return input[0]
+        elif window_size > len(input):
+            return -1
 
         result = []
         sum = 0
         for i in range(len(input)):
             if i < window_size:
                 sum += input[i]
-                result.append(sum / i + 1)
+                result.append(int(sum / (i + 1)))
             else:
                 remove_val = input[i - window_size]
-                sum -= remove_val + input[i]
-                result.append(sum / window_size)
+                sum = (sum - remove_val) + input[i]
+                result.append(int(sum / window_size))
         return result
+
+    def gcd(self, a, b):
+        if b == 0:
+            return a
+        return self.gcd(b, (a % b))
+
+    def count_ways(self, n):
+        memo=[-1]*(n+1)
+        return self.__count_ways(n, memo)
+
+    def __count_ways(self, n, memo):
+        if n < 0:
+            return 0
+        elif (n == 0):
+            return 1
+        elif memo[n] > -1:
+            return memo[n]
+        else:
+            memo[n] = self.__count_ways(n-1, memo) + self.__count_ways(n-2, memo) + self.__count_ways(n-3, memo)
+            return memo[n]
+
+    def second_largest(self,x):
+        largest=None
+        second_largest=None
+        for item in x:
+            if largest==None:
+                largest=item
+            elif item > largest:
+                second_largest=largest
+                largest=item
+            elif second_largest==None:
+                second_largest=item
+
+        return second_largest
+
+    def subsets_of_set(self, data, index):
+        result=[]
+        if len(data) == index:
+            result.append(list())
+        else:
+            result = self.subsets_of_set(data, index + 1)
+            item = data[index]
+            moresubsets=list(list())
+            for subset in result:
+                newsubset = list()
+                for x in subset:
+                    newsubset.append(x)
+                newsubset.append(item)
+                moresubsets.append(newsubset)
+            for x in moresubsets:
+                result.append(x)
+
+        return result
+

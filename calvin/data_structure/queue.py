@@ -1,3 +1,5 @@
+from calvin.data_structure.stack import Stack
+
 class Queue:
     def __init__(self):
         self.items = []
@@ -29,17 +31,16 @@ class Queue:
         else:
             raise StopIteration
 
-from collections import deque
 class QueueUsingStacks():
     def __init__(self):
-        self.stack1=deque()
-        self.stack2=deque()
+        self.stack1=Stack()
+        self.stack2=Stack()
 
     def isEmpty(self):
-        return not self.stack1 and not self.stack2
+        return self.stack1.isEmpty() and self.stack2.isEmpty()
 
     def enqueue(self, item):
-        self.stack1.append(item)
+        self.stack1.push(item)
 
     def dequeue(self):
         self.__rotateStack()
@@ -47,18 +48,18 @@ class QueueUsingStacks():
 
     def peek(self):
         self.__rotateStack()
-        return self.stack2[-1]
+        return self.stack2.peek()
 
     def __rotateStack(self):
         if (self.isEmpty()):
             raise Exception("queue is empty!")
 
-        if not self.stack2:
-            while self.stack1:
-                self.stack2.append(self.stack1.pop())
+        if self.stack2.isEmpty():
+            while not self.stack1.isEmpty():
+                self.stack2.push(self.stack1.pop())
 
     def size(self):
-        return len(self.stack1) + len(self.stack2)
+        return self.stack1.size() + self.stack2.size()
 
 class QueueUsingNodes():
     class QueueNode():
@@ -101,3 +102,47 @@ class QueueUsingNodes():
 
     def size(self):
         return self.length
+
+
+class CircularQueue(object):
+    def __init__(self, maxsize=8):
+        self.max_size = maxsize
+        self.queue_array = [None] * maxsize
+        self.head = 0
+        self.tail = 0
+        self.size = 0
+
+    def enqueue(self, item):
+        if self.size >= self.max_size:
+            raise Exception("Queue is full!")
+        self.queue_array[self.tail] = item
+        self.tail += 1
+        self.tail = self.tail % self.max_size
+        self.size += 1
+
+    def dequeue(self):
+        if self.isEmpty():
+            raise Exception("Queue is empty!")
+        rv = self.queue_array[self.head]
+        self.head += 1
+        self.head = self.head % self.max_size
+        self.size -= 1
+        return rv
+
+    def peek(self):
+        if (self.isEmpty()):
+            raise Exception("Queue is empty!")
+
+        return self.queue_array[self.head]
+
+    def isEmpty(self):
+        return self.size == 0
+
+    def __repr__(self):
+        r = ""
+        c = self.head
+        print("head: " + str(c))
+        for i in range(self.size):
+            index = (c + i) % self.max_size
+            r += " " + str(self.queue_array[index])
+        return r.lstrip()
