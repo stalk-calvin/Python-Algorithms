@@ -197,3 +197,125 @@ class Numbers(object):
 
         return result
 
+    def swapMinMax(self, values):
+        min_index = 0
+        max_index = 0
+        for i in range(1, len(values)):
+            if values[i] < values[min_index]:
+                min_index = i
+            if values[i] > values[max_index]:
+                max_index = i
+
+        t = values[min_index]
+        values[min_index] = values[max_index]
+        values[max_index] = t
+
+    def rotated_search(self, arr, key):
+      if arr is None:
+        return None
+      if not isinstance(key, int):
+        raise Exception("Search string can only be integer!")
+
+      if arr[0] == key:
+        return arr[0]
+      elif arr[len(arr)-1]==key:
+        return arr[len(arr)-1]
+
+      l=0
+      r=len(arr)
+      while(l<=r):
+        m=l+int((r-l)/2)
+        if m==len(arr):
+            break
+        if key==arr[m]:
+          return arr[m]
+        elif arr[l] <= arr[m]:
+          if arr[l] <= key and key < arr[m]:
+            r=m-1
+          else:
+            l=m+1
+        else:
+          if (arr[m] < key and key <= arr[r]):
+            l=m+1
+          else:
+            r=m-1
+
+      return -1
+
+    def binarySearchRecursive(self, arr, search, start, end):
+        if arr and start <= end:
+            m=start+int((end-start)/2)
+            if search==arr[m]:
+                 return arr[m]
+            elif search < arr[m]:
+                 return self.binarySearchRecursive(arr, search, start, m-1)
+            else:
+                 return self.binarySearchRecursive(arr, search, m+1, end)
+        return -1
+
+    def binarySearchIterative(self, arr, search):
+        if arr is None:
+            return None
+        l = 0
+        r = len(arr)-1
+        while l <= r:
+            m = (l+r) >> 1
+            if search == arr[m]:
+                return arr[m]
+            elif search < arr[m]:
+                r = m - 1
+            else:
+                l = m + 1
+        return -1
+
+    def sum_swap(self, a, b):
+        if a is None or b is None:
+            return None
+
+        sum1=sum(a)
+        sum2=sum(b)
+        result=set()
+        for x in a:
+            for y in b:
+                newsum1=sum1-x+y
+                newsum2=sum2-y+x
+                if newsum1==newsum2:
+                    result.add((x,y))
+
+        return result
+
+    def sum_swap_target(self, a, b):
+        if a is None or b is None:
+            return None
+
+        target=self.__ss_get_target(a,b)
+        if not target:
+            return None
+
+        result = set()
+        for x in a:
+            for y in b:
+                if x-y==target:
+                    result.add((x,y))
+
+        return result
+
+    def __ss_get_target(self, a, b):
+        sum1=sum(a)
+        sum2=sum(b)
+        if (sum1-sum2) % 2 != 0:
+            return None
+        return (sum1-sum2)/2
+
+    def smallest_k(self, arr, k):
+      if arr is None:
+        return None
+
+      arr.sort()
+
+      if k > len(arr):
+          k=len(arr)
+      smallest=[None]*k
+      for i in range(k):
+        smallest[i] = arr[i]
+      return smallest

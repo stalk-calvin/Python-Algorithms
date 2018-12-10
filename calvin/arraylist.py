@@ -2,19 +2,6 @@ from calvin.point import Point
 from calvin.data_structure.queue import Queue
 
 class ArrayList(object):
-    def swapMinMax(self, values):
-        min_index=0
-        max_index = 0
-        for i in range(1, len(values)):
-            if values[i] < values[min_index]:
-                min_index = i
-            if values[i] > values[max_index]:
-                max_index=i
-
-        t=values[min_index]
-        values[min_index] = values[max_index]
-        values[max_index]=t
-
     def rotate_matrix(self, image):
         if image is None or len(image) == 0 or len(image) != len(image[0]):
             return None
@@ -107,6 +94,23 @@ class ArrayList(object):
                 result = element
         return result
 
+    def second_largest_simpler(self, a):
+        if a is None:
+            return a
+
+        largest = None
+        second_largest = None
+        for item in a:
+            if largest is None:
+                largest = item
+            elif item > largest:
+                second_largest = largest
+                largest = item
+            elif second_largest is None:
+                second_largest = item
+
+        return second_largest
+
     def get_path(self, maze):
         if maze is None or len(maze) < 1:
             return None
@@ -119,7 +123,7 @@ class ArrayList(object):
         if col<0 or row<0 or not maze[row][col]:
             return False
 
-        is_at_origin= row==0 and col==0
+        is_at_origin = row==0 and col==0
         if is_at_origin or self.__get_path(maze, row, col-1, path) or self.__get_path(maze, row-1, col, path):
             p=Point(row,col)
             path.append(p)

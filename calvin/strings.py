@@ -40,6 +40,49 @@ class Strings(object):
         return ''.join(r)
 
     vowels=set('aiueo')
+    def sort_vowels(self, s):
+        track_vowels = []
+        track_vowel_index = []
+        for i, x in enumerate(s):
+            if x in self.vowels:
+                track_vowels.append(x)
+                track_vowel_index.append(i)
+
+        result = list(s)
+        for t in zip(track_vowel_index, sorted(track_vowels)):
+            result[t[0]] = t[1]
+
+        return ''.join(result)
+
+    def sort_string_between_given_vowels(self, s, given_vowel):
+        if s is None or given_vowel not in self.vowels:
+            return None
+
+        new_string = [''] * len(s)
+        space_index = set()
+        for i in range(len(s)):
+            if s[i] == ' ':
+                space_index.add(i)
+            else:
+                new_string[i] = s[i]
+
+        temp = []
+        temp_str = ''.join(new_string)
+        for x in temp_str.split(given_vowel):
+            temp.append(''.join(sorted(x)))
+
+        result = []
+        at_the_end = given_vowel.join(temp)
+        counter = 0
+        for i in range(len(s)):
+            if i in space_index:
+                result.append(' ')
+                counter -= 1
+            else:
+                result.append(at_the_end[i + counter])
+
+        return ''.join(result)
+
     def reverseVowels(self, s):
         string = list(s)
         vowels = []
@@ -435,3 +478,66 @@ class Strings(object):
     def string_rotation(self,s1,s2):
         s2=s2+s2
         return s2.find(s1) >= 0
+
+    def print_all_valid_paren(self, n):
+        result = set()
+        if (n == 0):
+            result.add('')
+        else:
+            current = self.print_all_valid_paren(n - 1)
+            for elem in current:
+                for i in range(len(elem)):
+                    if elem[i] =='(':
+                        s = self.__insert_paren(elem, i)
+                        result.add(s)
+                result.add('()'+elem)
+        return result
+
+    def __insert_paren(self, elem, i):
+        left = elem[0:i+1]
+        right = elem[i+1:]
+        return left +'()'+right
+
+    def tokenize_string(self, s):
+        if s is None:
+            return None
+
+        result = []
+        set_filters = {'!', ',', '?', '.', '_', '\'', '@', ' '}
+        current =''
+        for x in s:
+            if x in set_filters:
+                if len(current) > 0:
+                    result.append(current)
+                current =''
+            else:
+                current += x
+        result_str ='\n'.join(result)
+        return str(len(result)) + "\n" + result_str
+
+    def baseball_game(self, arr):
+        if arr is None:
+            return None
+
+        sum = 0
+        stack = Stack()
+        for x in arr:
+            if x.isdigit() or (x[0]=='-' and x[1:].isdigit()):
+                sum += int(x)
+                stack.push(x)
+            elif x == 'C':
+                sum-=int(stack.pop())
+            elif x == 'D':
+                sum += 2 * int(stack.peek())
+                stack.push(2 * int(stack.peek()))
+            elif x == '+':
+                curr = stack.pop()
+                prev = 0
+                if not stack.isEmpty():
+                    prev = stack.pop()
+                sum += (int(curr) + int(prev))
+                stack.push(int(curr) + int(prev))
+                stack.push(curr)
+        return sum
+
+

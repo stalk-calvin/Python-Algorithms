@@ -55,6 +55,16 @@ class StringsTest(unittest.TestCase):
         actual = self.fixture.longestCommonPrefix(input)
         self.assertEqual("jew", actual)
 
+    def test_sort_vowels(self):
+        input = 'bigger calvin'
+        actual = self.fixture.sort_vowels(input)
+        self.assertEqual('bagger cilvin', actual)
+
+    def test_sort_between_given_vowel(self):
+        input = 'bigger calvin'
+        actual = self.fixture.sort_string_between_given_vowels(input, 'a')
+        self.assertEqual('bceggi railnv', actual)
+
     def test_reverse_vowels(self):
         input = "calvin is a monster"
         actual = self.fixture.reverseVowels(input)
@@ -150,6 +160,24 @@ class StringsTest(unittest.TestCase):
     def test_string_rotation(self):
         self.assertTrue(self.fixture.string_rotation("waterbottle","erbottlewat"))
         self.assertFalse(self.fixture.string_rotation("waterbottle","erbottlewa"))
+
+    def test_print_all_valid_paren(self):
+        actual = self.fixture.print_all_valid_paren(3)
+        expected = {'(())()', '()()()', '(()())', '((()))', '()(())'}
+        for x in actual:
+            expected.remove(x)
+        self.assertTrue(len(expected)==0)
+
+    def test_baseball_game(self):
+        input=["5","2","C","D","+"]
+        self.assertEqual(30, self.fixture.baseball_game(input))
+        input=["5","-2","4","C","D","9","+","+"]
+        self.assertEqual(27, self.fixture.baseball_game(input))
+
+    def test_tokenize_string(self):
+        s="good boy, isn't he?"
+        expected="5\ngood\nboy\nisn\nt\nhe"
+        self.assertEqual(expected, self.fixture.tokenize_string((s)))
 
     def tearDown(self):
         del self.fixture

@@ -9,11 +9,6 @@ class ArrayListTest(unittest.TestCase):
     def setUp(self):
         self.fixture = ArrayList()
 
-    def test_swap_min_max(self):
-        actual = [7,5,23,2,7,4,2,3,1,5]
-        self.fixture.swapMinMax(actual)
-        self.assertEqual([7, 5, 1, 2, 7, 4, 2, 3, 23, 5], actual)
-
     def test_rotate_image(self):
         input=[]
         c=0
@@ -52,6 +47,17 @@ class ArrayListTest(unittest.TestCase):
         self.assertEqual(-2, self.fixture.second_largest(input))
         input=[2,2,1]
         self.assertEqual(2, self.fixture.second_largest(input))
+        input = [1, 2, 3]
+        self.assertEqual(2, self.fixture.second_largest(input))
+        self.assertEqual(None, self.fixture.second_largest(None))
+
+    def test_second_largest_simpler(self):
+        input=[1,3,4,5,0,2]
+        self.assertEqual(4, self.fixture.second_largest_simpler(input))
+        input=[-2, -1]
+        self.assertEqual(-2, self.fixture.second_largest_simpler(input))
+        input=[2,2,1]
+        self.assertEqual(2, self.fixture.second_largest_simpler(input))
 
     def test_get_path(self):
         maze=[
@@ -61,8 +67,17 @@ class ArrayListTest(unittest.TestCase):
             [1,1,1,0,0],
             [0,0,1,1,1]
         ]
-        self.assertEqual(None, self.fixture.get_path(None))
-        self.assertEqual("[(0, 0, None), (1, 0, None), (1, 1, None), (2, 1, None), (3, 1, None), (3, 2, None), (4, 2, None), (4, 3, None), (4, 4, None)]", str(self.fixture.get_path(maze)))
+        expected=[
+            (0, 0, None),
+            (1, 0, None),
+            (1, 1, None),
+            (2, 1, None),
+            (3, 1, None),
+            (3, 2, None),
+            (4, 2, None),
+            (4, 3, None),
+            (4, 4, None)]
+        self.assertEqual(str(expected), str(self.fixture.get_path(maze)))
         maze=[
             [1,0,1,1,1],
             [1,1,0,0,1],
@@ -71,6 +86,7 @@ class ArrayListTest(unittest.TestCase):
             [0,0,1,1,1]
         ]
         self.assertEqual(None, self.fixture.get_path(maze))
+        self.assertEqual(None, self.fixture.get_path(None))
 
     def test_shortest_route_to_destination(self):
         grid=[

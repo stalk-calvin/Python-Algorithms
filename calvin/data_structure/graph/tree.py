@@ -552,6 +552,7 @@ class BinarySearchTree(object):
                 return root
         return root
 
+
     def create_minimal_bst_tree(self, sorted_array, start, end):
         if end<start:
             return None
@@ -652,4 +653,17 @@ class BinarySearchTree(object):
             return self.first_common_ancestor(root.right, t1, t2)
         else:
             return root.val
+
+    def flipEquiv(self, root1, root2):
+        if not root1 and not root2:
+            return True
+        if not root1 or not root2:
+            return False
+        if root1.val != root2.val:
+            return False
+
+        flag1 = (self.flipEquiv(root1.left, root2.left) and self.flipEquiv(root1.right, root2.right))
+        flag2 = (self.flipEquiv(root1.left, root2.right) and self.flipEquiv(root1.right, root2.left))
+
+        return flag1 or flag2
 

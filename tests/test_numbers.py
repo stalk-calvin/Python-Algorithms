@@ -92,3 +92,82 @@ class NumbersTest(unittest.TestCase):
         self.assertEqual(len(input), len(actual))
         self.assertEqual([1, 1, 2, 3, 4, 5], actual)
         self.assertEqual(-1, self.fixture.computeMovingAverage(input, 10))
+
+    def test_binarySearchIterative(self):
+        input=[2,5,7,9,12,18,25]
+        self.assertEqual(12, self.fixture.binarySearchIterative(input, 12))
+        input=[12]
+        self.assertEqual(12, self.fixture.binarySearchIterative(input, 12))
+        input=[]
+        self.assertEqual(-1, self.fixture.binarySearchIterative(input, 12))
+        input=[2, 5, 7, 9, 12, 18, 25]
+        self.assertEqual(-1, self.fixture.binarySearchIterative(input, 15))
+        input=[13]
+        self.assertEqual(-1, self.fixture.binarySearchIterative(input, 15))
+
+    def test_binarySearchRecursive(self):
+        input=[2,5,7,9,12,18,25]
+        self.assertEqual(12, self.fixture.binarySearchRecursive(input, 12, 0, len(input)-1))
+        input=[12]
+        self.assertEqual(12, self.fixture.binarySearchRecursive(input, 12, 0, len(input)-1))
+        input=[]
+        self.assertEqual(-1, self.fixture.binarySearchRecursive(input, 12, 0, len(input)-1))
+        input=[2, 5, 7, 9, 12, 18, 25]
+        self.assertEqual(-1, self.fixture.binarySearchRecursive(input, 15, 0, len(input)-1))
+        input=[13]
+        self.assertEqual(-1, self.fixture.binarySearchRecursive(input, 15, 0, len(input)-1))
+
+    def test_swap_min_max(self):
+        input = [7,5,23,2,7,4,2,3,1,5]
+        self.fixture.swapMinMax(input)
+        self.assertEqual([7, 5, 1, 2, 7, 4, 2, 3, 23, 5], input)
+
+    def test_rotated_sorted_array(self):
+        input = [3,4,5,6,7,8,9]
+        self.assertEqual(4, self.fixture.rotated_search(input, 4))
+        self.assertEqual(3, self.fixture.rotated_search(input, 3))
+        self.assertEqual(9, self.fixture.rotated_search(input, 9))
+        self.assertEqual(8, self.fixture.rotated_search(input, 8))
+
+        input = [3,7,8,9,1,2]
+        self.assertEqual(7, self.fixture.rotated_search(input, 7))
+        self.assertEqual(8, self.fixture.rotated_search(input, 8))
+        self.assertEqual(2, self.fixture.rotated_search(input, 2))
+        self.assertRaises(Exception, self.fixture.rotated_search, input, 'abc')
+        self.assertRaises(Exception, self.fixture.rotated_search, input, None)
+        self.assertEqual(None, self.fixture.rotated_search(None, None))
+
+        input = [2,2,2,3,3,4,4,4,4,5,6,7]
+        self.assertEqual(6, self.fixture.rotated_search(input, 6))
+        self.assertEqual(7, self.fixture.rotated_search(input, 7))
+        self.assertEqual(2, self.fixture.rotated_search(input, 2))
+        self.assertEqual(5, self.fixture.rotated_search(input, 5))
+
+        input = [3]
+        self.assertEqual(3, self.fixture.rotated_search(input, 3))
+        self.assertEqual(-1, self.fixture.rotated_search(input, 4))
+
+    def test_sum_swap(self):
+        a=[4, 1, 2, 1, 1, 2]
+        b=[3, 6, 3, 3]
+        self.assertEqual({(1, 3), (4, 6)},self.fixture.sum_swap(a,b))
+        self.assertEqual(None, self.fixture.sum_swap(a, None))
+        a=[1, 1, 1, 1, 1, 1]
+        b=[5, 5, 5, 5, 5, 5]
+        self.assertEqual(set(), self.fixture.sum_swap(a, b))
+
+    def test_sum_swap_target(self):
+        # O(ab)
+        a=[4, 1, 2, 1, 1, 2]
+        b=[3, 6, 3, 3]
+        self.assertEqual({(1, 3), (4, 6)},self.fixture.sum_swap_target(a,b))
+        self.assertEqual(None, self.fixture.sum_swap(a, None))
+        a=[1, 1, 1, 1, 1, 1]
+        b=[5, 5, 5, 5, 5, 5]
+        self.assertEqual(set(),self.fixture.sum_swap_target(a,b))
+
+    def test_smallest_k(self):
+        input=[1,6,2,3,4,7,8,9,10]
+        self.assertEqual([1,2,3,4,6], self.fixture.smallest_k(input, 5))
+        self.assertEqual([1, 2, 3, 4, 6, 7, 8, 9, 10], self.fixture.smallest_k(input, 15))
+        self.assertEqual(None, self.fixture.smallest_k(None, 5))

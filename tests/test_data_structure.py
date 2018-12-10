@@ -556,6 +556,23 @@ class TestBinarySearchTree(unittest.TestCase):
         root = self.fixture.create_minimal_bst_tree(input, 0, len(input) - 1)
         self.assertEqual(2, self.fixture.first_common_ancestor(root, root.left.left, root.left.right))
 
+    def test_flip_equilvalent(self):
+        #[0,3,1,None,None,None,2]
+        root = tn(0)
+        root.left = tn(3)
+        root.right = tn(1)
+        root.left.left = None
+        root.left.right = None
+        root.right.left = None
+        root.right.right = tn(2)
+
+        #[0,3,1,2]
+        root1 = tn(0)
+        root1.left = tn(3)
+        root1.right = tn(1)
+        root1.left.left = tn(2)
+        self.assertTrue(self.fixture.flipEquiv(root, root1))
+
     def is_balanced_bf(self):
         for pair in self.balanced:
             k, v = pair
