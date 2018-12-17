@@ -6,7 +6,7 @@ from calvin.data_structure.graph.tree import BinaryTree, BinarySearchTree, Node 
 from calvin.data_structure.queue import Queue, QueueUsingStacks, QueueUsingNodes, CircularQueue
 from calvin.data_structure.stack import Stack, StackUsingQueue, StackUsingNodes, ThreeStacks, StackMin, SetOfStacks
 from calvin.data_structure.linkedlist import ListNode, LinkedList, SortedLinkedList
-from calvin.data_structure.graph.graph import Graph, Node, Traversals
+from calvin.data_structure.graph.graph import Graph, Node, Traversals, Sorting
 from calvin.data_structure.graph.graph_build_order import BuildOrder, Graph as bo_graph
 
 class TestLinkedList(unittest.TestCase):
@@ -928,6 +928,33 @@ class TestGraph(unittest.TestCase):
     def test_dfs(self):
         self.fixture.dfs(self.graph.get_node()[0])
         self.assertEqual(['A', 'B', 'E', 'C', 'F', 'I', 'J', 'G', 'H', 'D'], self.fixture.vertices)
+
+    def test_topological_sort(self):
+        g=Graph(4)
+        tmp=[None]*4
+        tmp[0] = Node('A', 0)
+        tmp[1] = Node('B', 1)
+        tmp[2] = Node('C', 3)
+        tmp[3] = Node('D', 1)
+
+        # B->A
+        tmp[1].add_child_node(tmp[0])
+
+        # C->A
+        tmp[2].add_child_node(tmp[0])
+        # C->B
+        tmp[2].add_child_node(tmp[1])
+        # C->D
+        tmp[2].add_child_node(tmp[3])
+
+        # D->B
+        tmp[3].add_child_node(tmp[1])
+
+        for i in range(4):
+            g.add_node(tmp[i])
+
+        ts=Sorting(g)
+        self.assertEqual("[Node(C), Node(D), Node(B), Node(A)]",str(ts.topologicalSort()))
 
     def build_graph(self):
         g = Graph()

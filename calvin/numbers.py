@@ -319,3 +319,14 @@ class Numbers(object):
       for i in range(k):
         smallest[i] = arr[i]
       return smallest
+
+    def is_magic(self, ans, arr, index, tmp):
+        if (len(arr) > index):
+            return self.is_magic(ans, arr, index + 1, tmp + arr[index]) or \
+                   self.is_magic(ans, arr, index + 1, tmp - arr[index])
+        elif ans == tmp:
+         return True
+        else:
+         return False
+
+

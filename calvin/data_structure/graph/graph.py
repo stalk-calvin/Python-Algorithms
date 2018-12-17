@@ -10,7 +10,7 @@ class Node(object):
         self.vertex = vertex
         self.childCount = 0
         self.children = [None] * children
-        self.state = None
+        self.state = State.UNVISITED
 
     def add_child_node(self, adj):
         adj.state = State.UNVISITED
@@ -24,9 +24,12 @@ class Node(object):
     def get_vertex(self):
         return self.vertex
 
+    def __repr__(self):
+        return "Node("+str(self.vertex)+")"
+
 class Graph(object):
-    def __init__(self):
-        self.vertices = [None] * 10
+    def __init__(self, size=10):
+        self.vertices = [None] * size
         self.count = 0
 
     def add_node(self, n):
@@ -87,4 +90,35 @@ class Traversals(object):
     def route_between_two_nodes(self, a, b):
         return self.bfs(a,b)
 
+class Sorting(object):
+    def __init__(self,graph=None):
+        self.graph=graph
 
+    # A recursive function used by topologicalSort
+    def topologicalSortUtil(self, node, stack):
+
+        # Mark the current node as visited.
+        node.state=State.VISITED
+
+        # Recur for all the vertices adjacent to this vertex
+        for n in node.get_child():
+            if n.state==State.UNVISITED:
+                self.topologicalSortUtil(n, stack)
+
+        # Push current vertex to stack which stores result
+        stack.insert(0, node)
+
+        # The function to do Topological Sort. It uses recursive
+
+    # topologicalSortUtil()
+    def topologicalSort(self):
+        # Mark all the vertices as not visited
+        stack = []
+
+        # Call the recursive helper function to store Topological
+        # Sort starting from all vertices one by one
+        for node in self.graph.vertices:
+            if node.state == State.UNVISITED:
+                self.topologicalSortUtil(node, stack)
+
+        return stack

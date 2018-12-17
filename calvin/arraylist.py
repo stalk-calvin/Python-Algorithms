@@ -21,6 +21,15 @@ class ArrayList(object):
 
         return image
 
+    def rotate_right_90_degrees_simpler(self, image):
+        return [list(x[::-1]) for x in zip(*image)]
+
+    def rotate_left_90_degrees_simpler(self, image):
+        nm=[]
+        for row in image:
+            nm.append(row[::-1])
+        return [list(x) for x in zip(*nm)]
+
     def count_island(self, matrix):
         if matrix is None:
             return None

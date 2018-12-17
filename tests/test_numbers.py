@@ -171,3 +171,9 @@ class NumbersTest(unittest.TestCase):
         self.assertEqual([1,2,3,4,6], self.fixture.smallest_k(input, 5))
         self.assertEqual([1, 2, 3, 4, 6, 7, 8, 9, 10], self.fixture.smallest_k(input, 15))
         self.assertEqual(None, self.fixture.smallest_k(None, 5))
+
+    def test_is_magic(self):
+        input=[1,2,3,4]
+        self.assertFalse(self.fixture.is_magic(9, input, 0, 0))
+        self.assertFalse(self.fixture.is_magic(3, input, 0, 0))
+        self.assertTrue(self.fixture.is_magic(6, input, 0, 0))

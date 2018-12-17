@@ -9,6 +9,13 @@ class ArrayListTest(unittest.TestCase):
     def setUp(self):
         self.fixture = ArrayList()
 
+    # image:
+    # [
+    #  [0, 1, 2, 3],
+    #  [4, 5, 6, 7],
+    #  [8, 9, 10, 11],
+    #  [12, 13, 14, 15]
+    # ]
     def test_rotate_image(self):
         input=[]
         c=0
@@ -17,8 +24,43 @@ class ArrayListTest(unittest.TestCase):
             c+=4
             input.append(t)
 
-        #image: [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]]
         self.assertEqual([[12, 8, 4, 0], [13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3]],self.fixture.rotate_matrix(input))
+
+    # image:
+    # [
+    #  [0, 1, 2, 3],
+    #  [4, 5, 6, 7],
+    #  [8, 9, 10, 11],
+    #  [12, 13, 14, 15]
+    # ]
+    def test_rotate_right_simpler(self):
+        input=[]
+        c=0
+        for x in range(4):
+            t=[i for i in range(c,4+c)]
+            c+=4
+            input.append(t)
+
+        self.assertEqual([[12, 8, 4, 0], [13, 9, 5, 1], [14, 10, 6, 2], [15, 11, 7, 3]],
+                         self.fixture.rotate_right_90_degrees_simpler(input))
+
+    # image:
+    # [
+    #  [0, 1, 2, 3],
+    #  [4, 5, 6, 7],
+    #  [8, 9, 10, 11],
+    #  [12, 13, 14, 15]
+    # ]
+    def test_rotate_left_simpler(self):
+        input=[]
+        c=0
+        for x in range(4):
+            t=[i for i in range(c,4+c)]
+            c+=4
+            input.append(t)
+
+        self.assertEqual([[3, 7, 11, 15], [2, 6, 10, 14], [1, 5, 9, 13], [0, 4, 8, 12]],
+                         self.fixture.rotate_left_90_degrees_simpler(input))
 
     def test_count_island(self):
         input=[
