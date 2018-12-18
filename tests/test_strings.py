@@ -48,6 +48,30 @@ class StringsTest(unittest.TestCase):
         self.assertFalse(self.fixture.isIsomorphic("foo", "bar"))
         self.assertFalse(self.fixture.isIsomorphic("different", "length"))
 
+    def test_find_longest_word_with_str(self):
+        input_str='cat'
+        self.assertEqual(None, self.fixture.find_longest_word_with_str(None, input_str))
+        input=['act','acquaintance', 'trace']
+        actual = self.fixture.find_longest_word_with_str(input, input_str)
+        self.assertEqual('acquaintance', actual)
+
+    def test_buddy_string(self):
+        A='abcd'
+        B='acbd'
+        self.assertTrue(self.fixture.buddy_string(A,B))
+        A='abcd'
+        B='abcd'
+        self.assertFalse(self.fixture.buddy_string(A,B))
+        A='abc'
+        B='abcd'
+        self.assertFalse(self.fixture.buddy_string(A,B))
+
+    def test_longest_two_unique(self):
+        self.assertEqual(None, self.fixture.longest_two_unique(None))
+        input='assdeeeddffffha'
+        actual = self.fixture.longest_two_unique(input)
+        self.assertEqual('deeedd', actual)
+
     def test_longest_common_prefix(self):
         self.assertEqual("", self.fixture.longestCommonPrefix(None))
         self.assertEqual("single", self.fixture.longestCommonPrefix(["single"]))

@@ -177,3 +177,40 @@ class NumbersTest(unittest.TestCase):
         self.assertFalse(self.fixture.is_magic(9, input, 0, 0))
         self.assertFalse(self.fixture.is_magic(3, input, 0, 0))
         self.assertTrue(self.fixture.is_magic(6, input, 0, 0))
+
+    def test_peakram(self, ):
+        class logentry(object):
+            def __init__(self, start, end, ram):
+                self.ram=ram
+                self.start=start
+                self.end=end
+
+        A=[
+            logentry(1, 2, 1),
+            logentry(3, 4, 3),
+            logentry(2, 4, 2),
+            logentry(5, 6, 10)
+        ]
+        # --- (1 GB)
+        #     --- (3 GB)
+        #   ----- (2 GB)
+        #         --- (10GB)
+        # 1 2 3 4 5 6
+        self.assertEqual(10, self.fixture.peak_ram(A))
+
+        A=[
+            logentry(0,100,500),
+            logentry(10,70,300),
+            logentry(50,200,1000),
+            logentry(110,220,400),
+            logentry(175,280,750)
+        ]
+        self.assertEqual(2150, self.fixture.peak_ram(A))
+
+        A=[
+            logentry(0,100,50),
+            logentry(50,250,1000),
+            logentry(100,125,240),
+            logentry(150,175,300)
+        ]
+        self.assertEqual(1300, self.fixture.peak_ram(A))

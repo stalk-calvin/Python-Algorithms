@@ -329,4 +329,29 @@ class Numbers(object):
         else:
          return False
 
+    def peak_ram(self, A):
+        times=dict()
+        cur=0
+        max=0
+        for i in A:
+            if i.start in times:
+                old=times.get(i.start)
+                new=old+i.ram
+                times[i.start]=new
+            else:
+                times[i.start]=i.ram
+            if i.end in times:
+                old=times.get(i.end)
+                new=old-i.ram
+                times[i.end]=new
+            else:
+                times[i.end]=-i.ram
 
+        t=sorted(times.items(), key=lambda x: x[0])
+
+        for key,val in t:
+            cur+=val
+            if cur>max:
+                max=cur
+
+        return max

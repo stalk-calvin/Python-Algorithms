@@ -164,6 +164,39 @@ class Strings(object):
 
         return True
 
+    def find_longest_word_with_str(self, input, input_str):
+        if input == None:
+            return None
+
+        t = set(input_str)
+        ms =''
+        for x in input:
+            # x has everything in set
+            for c in t:
+                if c not in x:
+                    continue
+            if len(ms) < len(x):
+                ms = x
+        return ms
+
+    def longest_two_unique(self, s):
+        if s == None:
+            return None
+        t = set()
+        start = 0
+        end = 0
+        result =''
+        for i, x in enumerate(s):
+            t.add(x)
+            if (len(t) > 2):
+                if len(result) < len(s[start:end]):
+                    result = s[start:end]
+                t = set(s[i])
+                start = i
+            end += 1
+
+        return result
+
     def longestCommonPrefix(self, s):
         """
         :type s: String array
@@ -479,6 +512,7 @@ class Strings(object):
         s2=s2+s2
         return s2.find(s1) >= 0
 
+
     def print_all_valid_paren(self, n):
         result = set()
         if (n == 0):
@@ -540,4 +574,24 @@ class Strings(object):
                 stack.push(curr)
         return sum
 
+    def buddy_string(self, A, B):
+        if len(A) != len(B):
+            return False
 
+        pair=None
+        swaps=False
+        uniq=set()
+        for a,b in zip(A,B):
+            if a==b:
+                uniq.add(a)
+            elif pair is None:
+                pair = a,b
+            elif swaps:
+                return False
+            else:
+                x,y = pair
+                if x==b and a==y:
+                    swaps = True
+                else:
+                    return False
+        return swaps or (len(uniq) < len(A))
