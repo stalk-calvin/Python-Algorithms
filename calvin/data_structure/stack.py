@@ -15,7 +15,7 @@ class Stack:
         if self.isEmpty():
             raise Exception('Empty Stack Exception')
         else:
-            return self.items[len(self.items) - 1]
+            return self.items[-1]
 
     def size(self):
         return len(self.items)
@@ -39,33 +39,47 @@ class Stack:
 
         return tracker
 
-from collections import deque
+    def sortStack(self, stack):
+        if (not stack.isEmpty()):
+            value = stack.pop()
+            self.sortStack(stack)
+            self.insert(stack, value)
+
+    def insert(self, stack, value):
+        if (stack.isEmpty() or value < stack.peek()):
+            stack.push(value)
+        else:
+            temp = stack.pop()
+            self.insert(stack, value)
+            stack.push(temp)
+
 class StackUsingQueue:
     def __init__(self):
-        self.queue = deque()
+        from calvin.data_structure.queue import Queue
+        self.queue = Queue()
 
     def isEmpty(self):
-        return not self.queue
+        return self.queue.isEmpty()
 
     def push(self, item):
-        self.queue.append(item)
-        for i in range(len(self.queue) - 1):
-            self.queue.append(self.queue.popleft())
+        self.queue.enqueue(item)
+        for i in range(self.size() - 1):
+            self.queue.enqueue(self.queue.dequeue())
 
     def pop(self):
         if self.isEmpty():
             raise Exception("stack is empty!")
 
-        return self.queue.popleft()
+        return self.queue.dequeue()
 
     def peek(self):
         if self.isEmpty():
             raise Exception("stack is empty!")
 
-        return self.queue[0]
+        return self.queue.peek()
 
     def size(self):
-        return len(self.queue)
+        return self.queue.size()
 
 class StackUsingNodes():
     class StackNode():

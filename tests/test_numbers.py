@@ -214,3 +214,10 @@ class NumbersTest(unittest.TestCase):
             logentry(150,175,300)
         ]
         self.assertEqual(1300, self.fixture.peak_ram(A))
+
+    def test_deficinet_number(self):
+        self.assertEqual([5, 14, 1596, 231, 1560, 491, 186, 16, 395, 178],
+         self.fixture.deficient_number(10,
+          [(1,4),(6,10),(34,89),(12,34),(37,90),(12,47),(39,47),(17,18),(78,87),(23,36)]))
+        self.assertEqual([1,1,1,1,1],self.fixture.deficient_number(5,[(1, 1), (1, 1), (1, 1), (1, 1), (1, 1)]))
+        self.assertEqual([0,0,0,0],self.fixture.deficient_number(4,[(6,6),(12,12),(18,18),(20,20)]))

@@ -189,8 +189,10 @@ class Strings(object):
         for i, x in enumerate(s):
             t.add(x)
             if (len(t) > 2):
+                print(result,s[i])
                 if len(result) < len(s[start:end]):
                     result = s[start:end]
+
                 t = set(s[i])
                 start = i
             end += 1
@@ -307,7 +309,7 @@ class Strings(object):
         :return: shifted string
         """
         l = list(s)
-        j = [e for e in enumerate(l) if e[1].lower() in self.vowels]
+        j = [e for e in enumerate(l) if e[1].lower() in set('aieou')]
         for k in range(len(j)): l[j[(k + 1) % len(j)][0]] = j[k][1]
         return ''.join(l)
 
@@ -405,6 +407,24 @@ class Strings(object):
             for i in range(len(str)):
                 rem = str[0:i] + str[i+1:]
                 self.__permute(rem, prefix+str[i], permuted)
+
+    def __op(self, a,b, op):
+        if op=='*':
+            return a*b
+        if op=='+':
+            return a+b
+        if op=='-':
+            return a-b
+        if op=='/':
+            return a/b
+
+    def operator_combo(self, a, b, c, d, op):
+        for i in range(len(op)):
+            for j in range(len(op)):
+                op1=op[i]
+                op2=op[j]
+                if self.__op(a, b, op1) == self.__op(c, d, op2):
+                    return (op1, op2)
 
     def isUnique(self,s):
         t=set()
@@ -595,3 +615,52 @@ class Strings(object):
                 else:
                     return False
         return swaps or (len(uniq) < len(A))
+
+    def compare_bs_caps(self, s1, s2):
+        r1=self.__string_bs_caps(s1)
+        r2=self.__string_bs_caps(s2)
+        return r1==r2
+
+    def __string_bs_caps(self,s):
+        BACKSLASH=False
+        CAPSLOCK=False
+        st=Stack()
+        for char in s:
+            if char=='\\':
+                BACKSLASH=not BACKSLASH
+            else:
+                if BACKSLASH and char=='b':
+                    st.pop()
+                    BACKSLASH=not BACKSLASH
+                elif BACKSLASH and char=='c':
+                    CAPSLOCK=not CAPSLOCK
+                    BACKSLASH = not BACKSLASH
+                else:
+                    st.push(char.upper() if CAPSLOCK else char)
+                    if CAPSLOCK:
+                        CAPSLOCK=not CAPSLOCK
+        result=''
+        for i in range(st.size()):
+            result=st.pop()+result
+        return result
+
+    def arrange(self, s1, s2):
+        s1 = s1.lower()
+        s2 = s2.lower()
+        r1 = []
+        r2 = []
+        for x in s1:
+            if x in s2:
+                r1.append(x)
+            else:
+                r2.append(x)
+
+        r = ''
+        for x in s2:
+            for y in r1:
+                if y == x:
+                    r += x
+
+        r += ''.join(r2)
+        return r
+

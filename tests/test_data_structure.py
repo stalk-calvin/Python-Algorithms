@@ -6,7 +6,7 @@ from calvin.data_structure.graph.tree import BinaryTree, BinarySearchTree, Node 
 from calvin.data_structure.queue import Queue, QueueUsingStacks, QueueUsingNodes, CircularQueue
 from calvin.data_structure.stack import Stack, StackUsingQueue, StackUsingNodes, ThreeStacks, StackMin, SetOfStacks
 from calvin.data_structure.linkedlist import ListNode, LinkedList, SortedLinkedList
-from calvin.data_structure.graph.graph import Graph, Node, Traversals, Sorting
+from calvin.data_structure.graph.graph import Graph, Node, Traversals, Sorting, AdjacencyListGraph
 from calvin.data_structure.graph.graph_build_order import BuildOrder, Graph as bo_graph
 
 class TestLinkedList(unittest.TestCase):
@@ -161,6 +161,16 @@ class TestSortedLinkedList(unittest.TestCase):
         self.assertEqual(None, self.fixture.search_node(20))
         self.assertEqual(9, self.fixture.search_node(9).value)
         self.assertTrue("3 5 6 6 6 9 10"==str(self.fixture))
+
+        #Create tree from sorted list
+        root=self.fixture.list_to_bst()
+        self.assertEqual(6,root.val)
+        self.assertEqual(5,root.left.val)
+        self.assertEqual(3,root.left.left.val)
+        self.assertEqual(6,root.left.right.val)
+        self.assertEqual(9,root.right.val)
+        self.assertEqual(6,root.right.left.val)
+        self.assertEqual(10, root.right.right.val)
 
 class TestQueue(unittest.TestCase):
     def setUp(self):
@@ -357,7 +367,12 @@ class TestStack(unittest.TestCase):
         s1.push(1);s1.push(2);s1.push(4);s1.push(9);s1.push(12);s1.push(11);s1.push(3)
         expected=[1, 2, 3, 4, 9, 11, 12]
         for i in enumerate(iter(self.fixture.sort(s1))):
-            self.assertEquals(expected[i[0]], i[1])
+            self.assertEqual(expected[i[0]], i[1])
+
+        s1.push(1);s1.push(2);s1.push(4);s1.push(9);s1.push(12);s1.push(11);s1.push(3)
+        self.fixture.sortStack(s1)
+        for i in range(s1.size()):
+            self.assertEqual(expected[i], s1.pop())
 
 class TestSetOfStacks(unittest.TestCase):
     def setUp(self):
@@ -561,9 +576,6 @@ class TestBinarySearchTree(unittest.TestCase):
         root = tn(0)
         root.left = tn(3)
         root.right = tn(1)
-        root.left.left = None
-        root.left.right = None
-        root.right.left = None
         root.right.right = tn(2)
 
         #[0,3,1,2]
@@ -917,6 +929,59 @@ class TestGraph(unittest.TestCase):
         self.assertFalse(self.fixture.route_between_two_nodes(self.graph.get_node()[0], None))
         self.assertFalse(self.fixture.route_between_two_nodes(None, None))
 
+    def test_has_cycle(self):
+        g=Graph(4)
+        tmp=[None]*4
+        tmp[0] = Node('A', 0)
+        tmp[1] = Node('B', 1)
+        tmp[2] = Node('C', 3)
+        tmp[3] = Node('D', 1)
+
+        # B->A
+        tmp[1].add_child_node(tmp[0])
+
+        # C->A
+        tmp[2].add_child_node(tmp[0])
+        # C->B
+        tmp[2].add_child_node(tmp[1])
+        # C->D
+        tmp[2].add_child_node(tmp[3])
+
+        # D->B
+        tmp[3].add_child_node(tmp[1])
+
+        for i in range(4):
+            g.add_node(tmp[i])
+
+        self.assertFalse(self.fixture.detect_cycle(g))
+
+        g=Graph(4)
+        tmp=[None]*4
+        tmp[0] = Node('A', 1)
+        tmp[1] = Node('B', 1)
+        tmp[2] = Node('C', 2)
+        tmp[3] = Node('D', 1)
+
+        # A->C
+        tmp[0].add_child_node(tmp[2])
+
+        # B->A
+        tmp[1].add_child_node(tmp[0])
+
+        # C->B
+        tmp[2].add_child_node(tmp[1])
+        # C->D
+        tmp[2].add_child_node(tmp[3])
+
+        # D->B
+        tmp[3].add_child_node(tmp[1])
+
+        for i in range(4):
+            g.add_node(tmp[i])
+
+        self.assertTrue(self.fixture.detect_cycle(g))
+
+
     def test_bfs(self):
         self.fixture.bfs(self.graph.get_node()[0])
         self.assertEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], self.fixture.vertices)
@@ -993,6 +1058,19 @@ class TestGraph(unittest.TestCase):
             g.add_node(tmp[i])
         return g
 
+class TestAdjacencyListGraph(unittest.TestCase):
+    def setUp(self):
+        self.fixture=AdjacencyListGraph(4)
+
+    def test_operations(self):
+        self.fixture.addEdge(0, 1)
+        self.fixture.addEdge(0, 2)
+        self.fixture.addEdge(1, 3)
+        self.fixture.addEdge(2, 3)
+        self.fixture.printGraph()
+        self.assertEqual('1', str(self.fixture.array[0].head.next))
+        self.assertEqual('3', str(self.fixture.array[1].head))
+
 class TestBinaryTree(unittest.TestCase):
     def setUp(self):
         self.fixture = BinaryTree()
@@ -1056,6 +1134,16 @@ class TestBinaryTree(unittest.TestCase):
 
         result=[]
         self.assertEqual([[0, -1, 2], [0, 1]], self.fixture.path_sum_result(tree, 1, 0, result, []))
+
+    def test_even_sum(self):
+        tree = tn(0, 10)
+        tree.left = tn(0, 2)
+        tree.left.left = tn(0, 1)
+        tree.left.right = tn(0, 101)
+        tree.right = tn(0, 5)
+        tree.right.right = tn(0, 13)
+
+        print(self.fixture.even_sum(tree))
 
 class TestGraphBuildOrder(unittest.TestCase):
     def setUp(self):

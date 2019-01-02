@@ -1,5 +1,3 @@
-from calvin.data_structure.stack import Stack
-
 class Queue:
     def __init__(self):
         self.items = []
@@ -33,6 +31,7 @@ class Queue:
 
 class QueueUsingStacks():
     def __init__(self):
+        from calvin.data_structure.stack import Stack
         self.stack1=Stack()
         self.stack2=Stack()
 

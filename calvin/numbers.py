@@ -61,6 +61,22 @@ class Numbers(object):
     #         return '+'
     #     return self.cantorSet(d - 1, n - 1) + ' ' * (3 ** (d - 1)) + self.cantorSet(d - 1, n - 1)
 
+    def sTodhms(self, s):
+        """
+        Given ms, show its day, hour, min, second
+        :return: d,h,m,s
+        """
+        ts=0
+        for i in s:
+            iph,ipm,ips=map(int,i.split(':'))
+            ts+=ips+ipm*60+iph*3600
+        avg=ts/len(s)
+        m, s = divmod(avg, 60)
+        h, m = divmod(m, 60)
+        d, h = divmod(h, 24)
+        print(h,m,s)
+        return ':'.join([str(round(x)).zfill(2) for x in (h,m,s)])
+
     def msTodhms(self, ms):
         """
         Given ms, show its day, hour, min, second
@@ -269,6 +285,9 @@ class Numbers(object):
         return -1
 
     def sum_swap(self, a, b):
+        # a=[4, 1, 2, 1, 1, 2]
+        # b=[3, 6, 3, 3]
+        # {(1, 3), (4, 6)}
         if a is None or b is None:
             return None
 
@@ -355,3 +374,24 @@ class Numbers(object):
                 max=cur
 
         return max
+
+    def deficient_number(self,t,n):
+        m, x, y = 0, [], []
+        for i in range(t):
+            a, b = n[i]
+            x.append(a)
+            y.append(b)
+            m = max(b, m)
+        d = [0] * m
+        for i in range(1, m + 1):
+            s = 0
+            for j in range(1, i + 1):
+                if i % j == 0: s += j
+            if s < 2 * i: d[i - 1] = 2 * i - s
+        r=[]
+        for i in range(t):
+            f = 0
+            for j in range(x[i], y[i] + 1): f += d[j - 1]
+            r.append(f)
+        return r
+

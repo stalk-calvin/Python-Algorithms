@@ -188,3 +188,30 @@ class ArrayList(object):
                 q.enqueue(Point(item.row+1, item.col, item.dist+1))
 
         return None # Not found
+
+
+    def room_size(self, width, height, rows):
+        from collections import defaultdict as dd
+        l = [-1] * width
+        h = dd(int)
+        c = 0
+        for i in range(height):
+            row = rows.pop(0)
+            t = []
+            for j in range(len(row)):
+                if row[j] == '.':
+                    if l[j] == -1:
+                        t.append(c)
+                        h[c] += 1
+                    else:
+                        t.append(l[j])
+                        h[l[j]] += 1
+                else:
+                    t.append(-1)
+                    c += 1
+            c += 1
+            l = t
+            print(h, c, t)
+        return max(h.values()) if h else 0
+
+

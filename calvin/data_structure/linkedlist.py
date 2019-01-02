@@ -215,6 +215,12 @@ class LinkedList(object):
 
         return fast
 
+class TreeNode(object):
+    def __init__(self, val=None, left=None, right=None):
+        self.val=val
+        self.left=left
+        self.right=right
+
 class SortedLinkedList(object):
     def __init__(self):
         self.head = None
@@ -263,8 +269,29 @@ class SortedLinkedList(object):
 
         return None
 
+    def list_to_bst(self):
+        if self.head is None:
+            return None
+        return self.to_bst(self.head, None)
+
+    def to_bst(self, head, tail):
+        if head is tail:
+            return None
+
+        fast=head
+        slow=head
+
+        while fast is not tail and fast.next is not tail:
+            fast=fast.next.next
+            slow=slow.next
+
+        current=TreeNode(slow.value)
+        current.left=self.to_bst(head, slow)
+        current.right=self.to_bst(slow.next, tail)
+        return current
+
     def __repr__(self):
-        return self.__helper(self.head, "").lstrip()
+         return self.__helper(self.head, "").lstrip()
 
     def __helper(self, current, result):
         if current is None:

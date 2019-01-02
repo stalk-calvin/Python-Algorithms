@@ -65,6 +65,9 @@ class StringsTest(unittest.TestCase):
         A='abc'
         B='abcd'
         self.assertFalse(self.fixture.buddy_string(A,B))
+        A='abcdab'
+        B='abcdab'
+        self.assertTrue(self.fixture.buddy_string(A,B))
 
     def test_longest_two_unique(self):
         self.assertEqual(None, self.fixture.longest_two_unique(None))
@@ -202,6 +205,23 @@ class StringsTest(unittest.TestCase):
         s="good boy, isn't he?"
         expected="5\ngood\nboy\nisn\nt\nhe"
         self.assertEqual(expected, self.fixture.tokenize_string((s)))
+
+    def test_operator_combo(self):
+        self.assertEqual(('+', '+'),self.fixture.operator_combo(14,-58,-85,41,'+-/*'))
+        self.assertEqual(('+', '/'),self.fixture.operator_combo(1,2,99,33,'+-/*'))
+        self.assertEqual(('/', '*'),self.fixture.operator_combo(72,3,3,8,'+-/*'))
+        self.assertEqual(('-', '-'),self.fixture.operator_combo(172,170,333,331,'+-/*'))
+        self.assertEqual(('*', '*'),self.fixture.operator_combo(88,50,22,200,'+-/*'))
+
+    def test_compare_bs_caps(self):
+        self.assertTrue(self.fixture.compare_bs_caps("abcAA\\baaa","abc\caaaa"))
+        self.assertFalse(self.fixture.compare_bs_caps("abcA\\b","abc\ca"))
+        self.assertTrue(self.fixture.compare_bs_caps("abcA\\b","abc"))
+        self.assertFalse(self.fixture.compare_bs_caps("abcA\\b","ab\ccA"))
+
+    def test_arrange(self):
+        self.assertEqual('ooggle', self.fixture.arrange("Google", "dog"))
+        self.assertEqual('caaebdddf', self.fixture.arrange("abcdedadf", "cae"))
 
     def tearDown(self):
         del self.fixture

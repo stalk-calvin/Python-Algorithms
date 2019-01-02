@@ -135,6 +135,22 @@ class BinaryTree(object):
         return result
 
 
+    def even_sum(self, tree):
+        max=[0]
+        self.__even_sum_helper(tree, max)
+        return max[0]
+
+    def __even_sum_helper(self, tree, max):
+        if not tree:
+            return
+
+        if max[0]+tree.val % 2 == 0 and max[0] < max[0]+tree.val:
+            max[0]=max[0]+tree.val
+
+        self.__even_sum_helper(tree.left, max)
+        self.__even_sum_helper(tree.right, max)
+
+
 class BalancedWithHeight(object):
     def __init__(self, balanced, height):
         self.balanced = balanced

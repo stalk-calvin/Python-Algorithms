@@ -1,6 +1,7 @@
 from calvin.data_structure.stack import Stack
-
 from enum import Enum
+from calvin.data_structure.linkedlist import LinkedList
+
 class State(Enum):
     VISITED = 1
     UNVISITED = 2
@@ -90,6 +91,29 @@ class Traversals(object):
     def route_between_two_nodes(self, a, b):
         return self.bfs(a,b)
 
+    def detect_cycle(self, g):
+        exists=set()
+        for node in g.vertices:
+            if self.__detect_cycle_rec(node,exists):
+                return True
+        return False
+
+    def __detect_cycle_rec(self,node,exists):
+        if node.vertex in exists:
+            return True
+
+        if node.state==State.VISITED:
+            return False
+
+        node.state=State.VISITED
+        exists.add(node.vertex)
+        for n in node.children:
+            if self.__detect_cycle_rec(n,exists):
+                return True
+
+        exists.remove(node.vertex)
+        return False
+
 class Sorting(object):
     def __init__(self,graph=None):
         self.graph=graph
@@ -122,3 +146,22 @@ class Sorting(object):
                 self.topologicalSortUtil(node, stack)
 
         return stack
+
+class AdjacencyListGraph(object):
+    def __init__(self, vertices):
+        self.vertices = vertices
+        self.array = []
+        for i in range(vertices):
+            temp = LinkedList()
+            self.array.append(temp)
+
+    def addEdge(self, source, destination):
+        # As we are implementing a directed graph, (1,0) is not equal to (0,1)
+        self.array[source].prepend(destination)
+
+    def printGraph(self):
+        print(">>Adjacency List of Directed Graph<<")
+        print()
+        for i in range(self.vertices):
+            print("|", i, "| => "+str(self.array[i])+" -> ",end='')
+            print("None")
