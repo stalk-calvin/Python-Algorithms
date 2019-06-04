@@ -9,7 +9,4 @@ setup(name='calvin',
       author_email='stalk.calvin@gmail.com',
       license='GPL',
       packages=find_packages(),
-      classifiers=[
-          'Programming Language :: Python :: 2.7',
-          ],
       zip_safe=False)

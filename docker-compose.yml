@@ -1,11 +1,11 @@
-version: '3'
+version: '3.4'
 
 services:
-  dev:
+  testing:
     build:
       context: .
-    image: python-2-and-3:latest
+      target: test
+    image: python3:latest
     container_name: python-algorithms
     volumes:
       - .:/python-algorithms
-    stdin_open: true

@@ -14,7 +14,7 @@ Basic functionality of how BST works: get, set, contains, max/min key, etc.
 Different interpretation of how fibonacci works: recursion, iterative, dp
 
 ## Strings
-### findTheDifference
+### findTheDifferenceXOR
 Given 2 strings find the difference between them
 
 ### reverseString

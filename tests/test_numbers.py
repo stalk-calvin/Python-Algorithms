@@ -187,16 +187,16 @@ class NumbersTest(unittest.TestCase):
 
         A=[
             logentry(1, 2, 1),
-            logentry(3, 4, 3),
-            logentry(2, 4, 2),
+            logentry(3, 4, 8),
+            logentry(2, 4, 3),
             logentry(5, 6, 10)
         ]
         # --- (1 GB)
-        #     --- (3 GB)
-        #   ----- (2 GB)
+        #     --- (8 GB)
+        #   ----- (3 GB)
         #         --- (10GB)
         # 1 2 3 4 5 6
-        self.assertEqual(10, self.fixture.peak_ram(A))
+        self.assertEqual(11, self.fixture.peak_ram(A))
 
         A=[
             logentry(0,100,500),

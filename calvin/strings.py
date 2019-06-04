@@ -6,7 +6,7 @@ class Strings(object):
     """
     Implementation on String Manipulation
     """
-    def findTheDifference(self, s, t):
+    def findTheDifferenceXOR(self, s, t):
         """
         :type s: str
         :type t: str
@@ -16,6 +16,20 @@ class Strings(object):
         for c in s + t:
             ans ^= ord(c)
         return chr(ans)
+
+    def findTheDifference(self, a, b):
+        a = a.strip()
+        b = b.strip()
+
+        if a == b:
+            return None
+
+        c = list(b)
+
+        for x in a:
+            c[c.index(x)] = ' '
+
+        return ''.join(c).strip()
 
     def anagramCounter(self, s1, s2):
         freq = [0 for i in range(26)]
