@@ -35,7 +35,7 @@ class StringsTest(unittest.TestCase):
         self.assertEqual("t", actual)
 
     def test_anagramCounter(self):
-        self.assertEquals(4, self.fixture.anagramCounter('cde','abc'))
+        self.assertEqual(4, self.fixture.anagramCounter('cde','abc'))
 
     def test_reverse_string(self):
         input = "abcd"
@@ -154,15 +154,15 @@ class StringsTest(unittest.TestCase):
 
     def test_compareVersion(self):
         actual = self.fixture.compareVersion('0.1', '0.11')
-        self.assertEquals(-1, actual)
+        self.assertEqual(-1, actual)
 
     def test_countAndSay(self):
         actual = self.fixture.countAndSay(6)
-        self.assertEquals('312211', actual)
+        self.assertEqual('312211', actual)
 
     def test_number_to_words(self):
         actual = self.fixture.number_to_words(1592837572)
-        self.assertEquals("One Billion Five Hundred Ninety Two Million Eight Hundred Thirty Seven Thousand Five Hundred Seventy Two", actual)
+        self.assertEqual("One Billion Five Hundred Ninety Two Million Eight Hundred Thirty Seven Thousand Five Hundred Seventy Two", actual)
 
     def test_permutation(self):
         actual = self.fixture.permutation("1234")
@@ -197,10 +197,10 @@ class StringsTest(unittest.TestCase):
         self.assertTrue(self.fixture.one_away("ple","pale"))
 
     def test_string_compression(self):
-        self.assertEquals(None,self.fixture.string_compression(None))
-        self.assertEquals("a3b1c6a3",self.fixture.string_compression("aaabccccccaaa"))
-        self.assertEquals("a", self.fixture.string_compression("a"))
-        self.assertEquals("abc", self.fixture.string_compression("abc"))
+        self.assertEqual(None,self.fixture.string_compression(None))
+        self.assertEqual("a3b1c6a3",self.fixture.string_compression("aaabccccccaaa"))
+        self.assertEqual("a", self.fixture.string_compression("a"))
+        self.assertEqual("abc", self.fixture.string_compression("abc"))
 
     def test_string_rotation(self):
         self.assertTrue(self.fixture.string_rotation("waterbottle","erbottlewat"))
@@ -240,6 +240,12 @@ class StringsTest(unittest.TestCase):
     def test_arrange(self):
         self.assertEqual('ooggle', self.fixture.arrange("Google", "dog"))
         self.assertEqual('caaebdddf', self.fixture.arrange("abcdedadf", "cae"))
+
+    def test_base_to_string(self):
+        self.assertEqual('1010', self.fixture.base_to_string(10, 2))
+        self.assertEqual('10', self.fixture.base_to_string(10, 10))
+        self.assertEqual('101', self.fixture.base_to_string(10, 3))
+        self.assertEqual('1111101000', self.fixture.base_to_string(1000, 2))
 
     def tearDown(self):
         del self.fixture

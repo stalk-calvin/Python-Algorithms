@@ -1,5 +1,5 @@
 cov-core==1.15.0
-coverage==3.7.1
+coverage>=4.1b2
 py==1.4.30
 pytest==2.8.2
 pytest-cov==2.2.0

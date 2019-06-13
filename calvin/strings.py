@@ -678,3 +678,20 @@ class Strings(object):
         r += ''.join(r2)
         return r
 
+    def base_to_string(self, number, base=2, padding=0):
+        digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        if base > len(digits):
+            raise ValueError("Bases greater than 36 not handled in base_repr.")
+        elif base < 2:
+            raise ValueError("Bases less than 2 not handled in base_repr.")
+
+        num = abs(number)
+        res = []
+        while num:
+            res.append(digits[num % base])
+            num //= base
+        if padding:
+            res.append('0' * padding)
+        if number < 0:
+            res.append('-')
+        return ''.join(reversed(res or '0'))
