@@ -36,6 +36,3 @@ install:
 script:
   - docker-compose build testing
   - docker-compose run --rm testing
-
-after_success:
-  - codecov

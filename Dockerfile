@@ -49,4 +49,4 @@ COPY requirements.txt $HOME
 
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-ENTRYPOINT ["coverage", "run", "run_tests.py"]
+ENTRYPOINT ["python", "run_tests.py"]
