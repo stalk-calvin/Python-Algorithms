@@ -86,7 +86,7 @@ class QueueUsingNodes():
             raise Exception("queue is empty!")
         rv=None
         self.head = self.head.next
-        if self.head == None:
+        if self.head is None:
             self.tail = None
         self.length-=1
         return rv
@@ -97,7 +97,7 @@ class QueueUsingNodes():
         return self.head.val
 
     def isEmpty(self):
-        return self.tail == None
+        return self.tail is None
 
     def size(self):
         return self.length

@@ -41,7 +41,7 @@ class Project(object):
 
 class BuildOrder(object):
     def __init__(self, graph):
-        if graph == None:
+        if graph is None:
             raise ("Construct a graph first!")
         self.graph = graph
 

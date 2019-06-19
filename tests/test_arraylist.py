@@ -193,3 +193,54 @@ class ArrayListTest(unittest.TestCase):
             '***************',
         ]
         self.assertEqual(22, self.fixture.room_size(15,16,rows))
+
+    def test_sum_rows_columns(self):
+        input=[
+            [1,0,0,0],
+            [1,1,0,0],
+            [1,1,1,0],
+            [1,1,1,1]
+        ]
+        self.assertEqual(([1,2,3,4],[4,3,2,1]),self.fixture.sum_rows_columns(input))
+
+    def test_diagonal_word(self):
+        input=[list("mooa"),list("oano"),list("otio"),list("ioon")]
+        self.assertEqual(('main','anti'), self.fixture.diagonal_word(input))
+        input=[list("xoo"),list("oxo"),list("oxx")]
+        self.assertEqual(('xxx','oxo'), self.fixture.diagonal_word(input))
+        input=[list("a")]
+        self.assertEqual(('a','a'), self.fixture.diagonal_word(input))
+        input=[list("cxyg"),list("xoaf"),list("mmdl"),list("eooe")]
+        self.assertEqual(('code','game'), self.fixture.diagonal_word(input))
+
+    def test_flip_matrix_ud(self):
+        input=[
+            [1,0,0,0],
+            [1,1,0,0],
+            [1,1,1,0],
+            [1,1,1,1]
+        ]
+        self.fixture.flip_matrix_ud(input)
+        expected=[
+            [1,1,1,1],
+            [1,1,1,0],
+            [1,1,0,0],
+            [1,0,0,0]
+        ]
+        self.assertEqual(expected, input)
+
+    def test_flip_matrix_lr(self):
+        input=[
+            [1,0,0,0],
+            [1,1,0,0],
+            [1,1,1,0],
+            [1,1,1,1]
+        ]
+        self.fixture.flip_matrix_lr(input)
+        expected=[
+            [0,0,0,1],
+            [0,0,1,1],
+            [0,1,1,1],
+            [1,1,1,1]
+        ]
+        self.assertEqual(expected, input)

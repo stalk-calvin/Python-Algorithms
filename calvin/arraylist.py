@@ -273,4 +273,21 @@ class ArrayList(object):
             print(h, c, t)
         return max(h.values()) if h else 0
 
+    def sum_rows_columns(self,m):
+        sum_rows=[sum(row) for row in m]
+        sum_columns=[sum(row[i] for row in m) for i in range(len(m[0]))]
+        return (sum_rows, sum_columns)
 
+    def diagonal_word(self,m):
+        n=len(m)
+        first=''.join(m[i][i] for i in range(n))
+        second=''.join(m[i][-i-1] for i in range(n))
+        return (first,second)
+
+    def flip_matrix_ud(self, m):
+        for i in range(0,len(m)//2):
+            m[i],m[-i-1]=m[-i-1],m[i]
+
+    def flip_matrix_lr(self, m):
+        for i in range(len(m)):
+            m[i]=m[i][::-1]

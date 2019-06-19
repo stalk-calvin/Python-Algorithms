@@ -1,3 +1,6 @@
+from typing import List
+
+
 class Numbers(object):
     """
     Implementation on String Manipulation
@@ -88,6 +91,40 @@ class Numbers(object):
         d, h = divmod(h, 24)
         return d, h, m, s
 
+    def combinationSumDFS(self, candidates: List[int], target: int) -> List[List[int]]:
+        def dfs(comb, i, target, res):
+            if target == 0:
+                res.append(comb)
+                return
+            for j, x in enumerate(candidates[i:]):
+                if x <= target:
+                    target -= x
+                    dfs(comb + [x], i + j, target, res)
+                    target += x
+
+        candidates.sort()
+        res = []
+        dfs([], 0, target, res)
+        return res
+
+    def combinationSumDFS2(self, candidates: List[int], target: int) -> List[List[int]]:
+        def dfs(comb, i, target, res):
+            if target == 0:
+                res.append(comb)
+                return
+            selected = set()
+            for j, x in enumerate(candidates[i:]):
+                if x <= target and x not in selected:
+                    selected.add(x)
+                    target -= x
+                    dfs(comb + [x], i + j + 1, target, res)
+                    target += x
+
+        candidates.sort()
+        res = []
+        dfs([], 0, target, res)
+        return res
+
     # recursive
     def combination_sum(self, n, t):
         if not n or not t:
@@ -141,7 +178,7 @@ class Numbers(object):
         return table[n][m-1]
 
     def computeMovingAverage(self, input, window_size):
-        if input == None or window_size < 1:
+        if input is None or window_size < 1:
             return 0
         elif len(input) == 1:
             return input[0]
@@ -395,4 +432,38 @@ class Numbers(object):
             r.append(f)
         return r
 
-    
+    def longest_consecutive_zeros(self,s):
+        """
+            longest consecutive zeros in the string of digits
+        """
+        s=str(s)
+        best=0
+        current=0
+
+        for i in s:
+            if i=='0':
+                current+=1
+                best=max(best,current)
+            else:
+                current=0
+
+        return max(best,current)
+
+    def almost_anagram(self,w1,w2):
+        """
+            how many letters do we need to add and remove from w1 to be w2
+        """
+        first=set(w1)
+        second=set(w2)
+        a,r=0,0
+        for i in w1:
+            if i not in second:
+                r+=1
+            else:
+                second.remove(i)
+        for i in w2:
+            if i not in first:
+                a+=1
+            else:
+                first.remove(i)
+        return (a,r)

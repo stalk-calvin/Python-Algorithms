@@ -120,10 +120,10 @@ class StackUsingNodes():
         return self.head.val
 
     def isEmpty(self):
-        return self.head == None
+        return self.head is None
 
     def size(self):
-        if self.head == None:
+        if self.head is None:
             return 0
         return self.length
 
@@ -212,7 +212,7 @@ class SetOfStacks(object):
 
     def push(self, item):
         last = self.get_last_stack()
-        if last == None or last.is_full():
+        if last is None or last.is_full():
             # create a new stack
             stack=StackUsingNodes(self.capacity)
             stack.push(item)
@@ -232,6 +232,6 @@ class SetOfStacks(object):
 
     def isEmpty(self):
         last=self.get_last_stack()
-        return last == None or last.isEmpty()
+        return last is None or last.isEmpty()
 
 

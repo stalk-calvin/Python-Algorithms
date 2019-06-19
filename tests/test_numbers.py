@@ -48,10 +48,22 @@ class NumbersTest(unittest.TestCase):
         self.assertEqual(41, m)
         self.assertEqual(1, s)
 
+    def test_combination_sum_dfs(self):
+        self.assertEqual([], self.fixture.combinationSumDFS([], 5))
+        self.assertEqual([[5]], self.fixture.combinationSumDFS([5], 5))
+        self.assertEqual([[1, 1, 1, 1, 1], [1, 1, 1, 2], [1, 2, 2], [1, 4]], self.fixture.combinationSumDFS([1,2,4], 5))
+        self.assertEqual([[2,2,3], [7]], self.fixture.combinationSumDFS([2,3,6,7], 7))
+
+    def test_combination_sum_dfs_2(self):
+        self.assertEqual([], self.fixture.combinationSumDFS2([], 5))
+        self.assertEqual([[5]], self.fixture.combinationSumDFS2([5], 5))
+        self.assertEqual([[1, 4]], self.fixture.combinationSumDFS2([1,2,4], 5))
+        self.assertEqual([[1, 1, 6],[1, 2, 5],[1, 7],[2, 6]], self.fixture.combinationSumDFS2([10,1,2,7,6,1,5], 8))
+
     def test_combination_sum(self):
-        self.assertEquals([], self.fixture.combination_sum([], 5))
-        self.assertEquals([5], self.fixture.combination_sum([5], 5))
-        self.assertEquals([[1, 1, 1, 1, 1], [1, 1, 1, 2], [1, 2, 2], [1, 4]], self.fixture.combination_sum([1,2,4], 5))
+        self.assertEqual([], self.fixture.combination_sum([], 5))
+        self.assertEqual([5], self.fixture.combination_sum([5], 5))
+        self.assertEqual([[1, 1, 1, 1, 1], [1, 1, 1, 2], [1, 2, 2], [1, 4]], self.fixture.combination_sum([1,2,4], 5))
 
     def test_countCoin(self):
         array=[2,5,6,3]
@@ -221,3 +233,17 @@ class NumbersTest(unittest.TestCase):
           [(1,4),(6,10),(34,89),(12,34),(37,90),(12,47),(39,47),(17,18),(78,87),(23,36)]))
         self.assertEqual([1,1,1,1,1],self.fixture.deficient_number(5,[(1, 1), (1, 1), (1, 1), (1, 1), (1, 1)]))
         self.assertEqual([0,0,0,0],self.fixture.deficient_number(4,[(6,6),(12,12),(18,18),(20,20)]))
+
+    def test_longest_consecutive_zeros(self):
+        self.assertEqual(4,self.fixture.longest_consecutive_zeros('100020300001'))
+        self.assertEqual(9,self.fixture.longest_consecutive_zeros('1000000000'))
+        self.assertEqual(0,self.fixture.longest_consecutive_zeros('1'))
+        self.assertEqual(1,self.fixture.longest_consecutive_zeros('1020304050'))
+        self.assertEqual(1,self.fixture.longest_consecutive_zeros('0'))
+
+    def test_almost_anagram(self):
+        self.assertEqual((1,0),self.fixture.almost_anagram('ABC','ABCD'))
+        self.assertEqual((0,1),self.fixture.almost_anagram('ABCD','ABC'))
+        self.assertEqual((2,2),self.fixture.almost_anagram('EDC','ABC'))
+        self.assertEqual((2,3),self.fixture.almost_anagram('ABABCC','ABDCD'))
+        self.assertEqual((4,7),self.fixture.almost_anagram('ZZXYXXZYY','XTYTUU'))

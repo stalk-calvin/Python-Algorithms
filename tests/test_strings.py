@@ -247,5 +247,10 @@ class StringsTest(unittest.TestCase):
         self.assertEqual('101', self.fixture.base_to_string(10, 3))
         self.assertEqual('1111101000', self.fixture.base_to_string(1000, 2))
 
+    def test_longest_recurring_substring(self):
+        self.assertEqual('l',self.fixture.longest_recurring_substring('HELLO WORLD!'))
+        self.assertEqual('er pipe',self.fixture.longest_recurring_substring('Peter piper picked a pickled pepper pipes'))
+        self.assertEqual(' where she s',self.fixture.longest_recurring_substring('I saw Susie sitting in a shoe shine shop. Where she sits she shines, and where she shines she sits.'))
+
     def tearDown(self):
         del self.fixture

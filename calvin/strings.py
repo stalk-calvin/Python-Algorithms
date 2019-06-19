@@ -179,7 +179,7 @@ class Strings(object):
         return True
 
     def find_longest_word_with_str(self, input, input_str):
-        if input == None:
+        if input is None:
             return None
 
         t = set(input_str)
@@ -194,7 +194,7 @@ class Strings(object):
         return ms
 
     def longest_two_unique(self, s):
-        if s == None:
+        if s is None:
             return None
         t = set()
         start = 0
@@ -459,7 +459,7 @@ class Strings(object):
         return True
 
     def checkPermutation(self, s1, s2):
-        if s1 == None or s2 == None:
+        if s1 is None or s2 is None:
             return False
         for x in s1:
             if x not in s2:
@@ -493,7 +493,7 @@ class Strings(object):
         return True
 
     def one_away(self, s1, s2):
-        if s1 == None or s2 == None:
+        if s1 is None or s2 is None:
             if (s1 != None and len(s1) == 1):
                 return True
             elif (s2 != None and len(s2) == 1):
@@ -519,7 +519,7 @@ class Strings(object):
         return len(t) <= 1
 
     def string_compression(self, input):
-        if input == None or len(input)==0:
+        if input is None or len(input)==0:
             return None
         if len(input)==1:
             return input
@@ -695,3 +695,17 @@ class Strings(object):
         if number < 0:
             res.append('-')
         return ''.join(reversed(res or '0'))
+
+    def longest_recurring_substring(self, s):
+        s=s.lower()
+        best=None
+        longest=0
+        for x in range(len(s)):
+            for y in range(x+1, len(s)):
+                sub=s[x:y]
+                c=sum(1 for i in range(len(s)) if s.startswith(sub,i))
+                length=len(sub)
+                if c>1 and length>longest:
+                    longest=length
+                    best=sub
+        return best

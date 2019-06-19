@@ -57,7 +57,7 @@ class Traversals(object):
                     vertex.state = State.VISITED
 
     def dfs(self, root):
-        if root == None:
+        if root is None:
             return
 
         self.vertices.append(root.get_vertex())
@@ -68,7 +68,7 @@ class Traversals(object):
                 self.dfs(n)
 
     def bfs(self, root, match=None):
-        if root == None:
+        if root is None:
             return False
 
         from collections import deque

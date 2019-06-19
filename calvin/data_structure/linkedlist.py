@@ -4,7 +4,7 @@ class ListNode(object):
         self.next = next
 
     def getNodes(self,r):
-        if self == None:
+        if self is None:
             return r
 
         if self.next:
@@ -85,7 +85,7 @@ class LinkedList(object):
         return self.head
 
     def printKthLastRecursive(self, head, k, result):
-        if head == None:
+        if head is None:
             return 0
 
         index = self.printKthLastRecursive(head.next, k, result) + 1
@@ -99,7 +99,7 @@ class LinkedList(object):
         p1=head
         p2=head
         for i in range(k):
-            if p1 == None:
+            if p1 is None:
                 return None
             p1=p1.next
 
@@ -110,9 +110,9 @@ class LinkedList(object):
         return p2
 
     def delete_middle_node(self, n):
-        if n == None:
+        if n is None:
             return False
-        if n.next == None:
+        if n.next is None:
             #remove tail = unsupported (no reference to tail)
             return False
 
@@ -146,7 +146,7 @@ class LinkedList(object):
         return node
 
     def sum_list(self, l1, l2, c):
-        if l1 == None and l2==None and c==0:
+        if l1 is None and l2==None and c==0:
            return None
 
         result=ListNode()

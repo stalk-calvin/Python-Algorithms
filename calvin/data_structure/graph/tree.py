@@ -13,11 +13,12 @@ class Node(object):
         self.left = left
         self.right = right
 
+
 class BinaryTree(object):
     def build_tree(self):
         root = Node(0, 1)
-        root.left = Node(0,2)
-        root.right = Node(0,3)
+        root.left = Node(0, 2)
+        root.right = Node(0, 3)
         return root
 
     def find_inorder_wrapper(self, root):
@@ -33,7 +34,7 @@ class BinaryTree(object):
         return result
 
     def serialize_preorder(self, root, out):
-        if root == None:
+        if root is None:
             out.append('#')
         else:
             out.append(str(root.val))
@@ -41,7 +42,7 @@ class BinaryTree(object):
             self.serialize_preorder(root.right, out)
 
     def serialize_inorder(self, root, out):
-        if root == None:
+        if root is None:
             out.append('#')
         else:
             self.serialize_preorder(root.left, out)
@@ -49,7 +50,7 @@ class BinaryTree(object):
             self.serialize_preorder(root.right, out)
 
     def serialize_postorder(self, root, out):
-        if root == None:
+        if root is None:
             out.append('#')
         else:
             self.serialize_preorder(root.left, out)
@@ -60,45 +61,45 @@ class BinaryTree(object):
         if not s:
             return None
 
-        n=None
+        n = None
         value = s.popleft()
         if value != '#':
-            n=Node(0, int(value))
+            n = Node(0, int(value))
             n.left = self.deserialize_pretree(s)
             n.right = self.deserialize_pretree(s)
         return n
 
     def first_common_ancestor(self, root, t1, t2):
-        if root == None:
+        if root is None:
             return None
         if root is t1 or root is t2:
             return root
         left = self.first_common_ancestor(root.left, t1, t2)
         right = self.first_common_ancestor(root.right, t1, t2)
         if left and right:
-            #found!
+            # found!
             return root
-        if left == None:
+        if left is None:
             return right
         else:
             return left
 
     def check_subtree(self, t1, t2):
-        if t2 == None:
+        if t2 is None:
             return True
         return self.__sub_tree(t1, t2)
 
     def __sub_tree(self, t1, t2):
-        if t1 == None:
+        if t1 is None:
             return False
         elif t1.val == t2.val and self.__match_tree(t1, t2):
             return True
         return self.__sub_tree(t1.left, t2) or self.__sub_tree(t1.right, t2)
 
     def __match_tree(self, t1, t2):
-        if t1 == None and t2 == None:
+        if t1 is None and t2 is None:
             return True
-        elif t1 == None or t2 == None:
+        elif t1 is None or t2 is None:
             return False
         elif t1.val != t2.val:
             return False
@@ -106,7 +107,7 @@ class BinaryTree(object):
             return self.__match_tree(t1.left, t2.left) and self.__match_tree(t1.right, t2.right)
 
     def path_sum(self, tree, to, current):
-        if tree == None:
+        if tree is None:
             return 0
         current += tree.val
 
@@ -120,7 +121,7 @@ class BinaryTree(object):
         return total_paths
 
     def path_sum_result(self, tree, to, current, result, line):
-        if tree == None:
+        if tree is None:
             return None
 
         current += tree.val
@@ -134,9 +135,8 @@ class BinaryTree(object):
 
         return result
 
-
     def even_sum(self, tree):
-        max=[0]
+        max = [0]
         self.__even_sum_helper(tree, max)
         return max[0]
 
@@ -144,8 +144,8 @@ class BinaryTree(object):
         if not tree:
             return
 
-        if max[0]+tree.val % 2 == 0 and max[0] < max[0]+tree.val:
-            max[0]=max[0]+tree.val
+        if max[0] + tree.val % 2 == 0 and max[0] < max[0] + tree.val:
+            max[0] = max[0] + tree.val
 
         self.__even_sum_helper(tree.left, max)
         self.__even_sum_helper(tree.right, max)
@@ -156,23 +156,27 @@ class BalancedWithHeight(object):
         self.balanced = balanced
         self.height = height
 
+
 from collections import deque
+
+
 class BinarySearchTree(object):
     """
     Implementation of a Binary Search Tree.
     """
+
     def __init__(self):
         self.root = None
 
     @staticmethod
     def __get_height(tree):
-        if tree==None:
+        if tree is None:
             return 0
 
         return max(BinarySearchTree.__get_height(tree.left), BinarySearchTree.__get_height(tree.right)) + 1
 
     def is_balanced_bf(self, tree):
-        if tree==None:
+        if tree is None:
             return True
         height = BinarySearchTree.__get_height(tree.left) + BinarySearchTree.__get_height(tree.right)
         if (height > 1):
@@ -180,8 +184,8 @@ class BinarySearchTree(object):
 
         return self.is_balanced_bf(tree.left) and self.is_balanced_bf(tree.right)
 
-    def is_balanced(self,tree):
-        if tree==None:
+    def is_balanced(self, tree):
+        if tree is None:
             return BalancedWithHeight(True, -1)
         left = self.is_balanced(tree.left)
         if (not left.balanced):
@@ -268,7 +272,7 @@ class BinarySearchTree(object):
         else:
             node.val = val
 
-        node.size_of_subtree = self._size(node.left) + self._size(node.right)+1
+        node.size_of_subtree = self._size(node.left) + self._size(node.right) + 1
         return node
 
     def put(self, key, val):
@@ -280,7 +284,6 @@ class BinarySearchTree(object):
         Balanced Tree Complexity: O(lg N)
         """
         self.root = self._put(key, val, self.root)
-
 
     def _min_node(self):
         """
@@ -483,7 +486,7 @@ class BinarySearchTree(object):
                 node = self._ceiling_node(key, node.right)
                 node.right = self._delete_min(old_node.right)
                 node.left = old_node.left
-        node.size_of_subtree = self._size(node.left) + self._size(node.right)+1
+        node.size_of_subtree = self._size(node.left) + self._size(node.right) + 1
         return node
 
     def delete(self, key):
@@ -501,7 +504,7 @@ class BinarySearchTree(object):
             return node.right
 
         node.left = self._delete_min(node.left)
-        node.size_of_subtree = self._size(node.left) + self._size(node.right)+1
+        node.size_of_subtree = self._size(node.left) + self._size(node.right) + 1
         return node
 
     def delete_min(self):
@@ -520,7 +523,7 @@ class BinarySearchTree(object):
             return node.left
 
         node.right = self._delete_max(node.right)
-        node.size_of_subtree = self._size(node.left) + self._size(node.right)+1
+        node.size_of_subtree = self._size(node.left) + self._size(node.right) + 1
         return node
 
     def delete_max(self):
@@ -568,20 +571,19 @@ class BinarySearchTree(object):
                 return root
         return root
 
-
     def create_minimal_bst_tree(self, sorted_array, start, end):
-        if end<start:
+        if end < start:
             return None
 
-        m=int(start+(end-start)/2)
-        root=Node(0, sorted_array[m])
-        root.left = self.create_minimal_bst_tree(sorted_array, start, m-1)
-        root.right = self.create_minimal_bst_tree(sorted_array, m+1, end)
+        m = int(start + (end - start) / 2)
+        root = Node(0, sorted_array[m])
+        root.left = self.create_minimal_bst_tree(sorted_array, start, m - 1)
+        root.right = self.create_minimal_bst_tree(sorted_array, m + 1, end)
         return root
 
     def bfs_with_level(self, root):
-        result=[]
-        if root==None:
+        result = []
+        if root is None:
             return None
 
         q = deque()
@@ -590,7 +592,7 @@ class BinarySearchTree(object):
         q.append(level_node)
         level = 1
         while q:
-            t=q.popleft()
+            t = q.popleft()
 
             if (t is level_node):
                 if not q:
@@ -609,38 +611,38 @@ class BinarySearchTree(object):
         return (result, level)
 
     def level(self, root):
-        if root==None:
+        if root is None:
             return 0
-        elif root.left==None and root.right==None:
+        elif root.left is None and root.right is None:
             return 1
         else:
-            depthLeft = 1+self.level(root.left)
-            depthRight = 1+self.level(root.right)
+            depthLeft = 1 + self.level(root.left)
+            depthRight = 1 + self.level(root.right)
             if depthLeft > depthRight:
                 return depthLeft
             else:
                 return depthRight
 
     def list_of_depths(self, root):
-        result=[]
+        result = []
 
-        if root == None or root.left == None and root.right == None:
+        if root is None or root.left is None and root.right is None:
             result = [ListNode(root.val)]
             return result
 
-        q=deque()
+        q = deque()
         q.append(root)
-        current_ll=LinkedList()
+        current_ll = LinkedList()
         current_ll.append(root.val)
         tracker = LinkedList()
         tracker.append(root)
         while tracker.head:
             result.append(current_ll)
-            parents=tracker.head
-            tracker=LinkedList()
-            current_ll=LinkedList()
+            parents = tracker.head
+            tracker = LinkedList()
+            current_ll = LinkedList()
             while parents:
-                ll=parents.value
+                ll = parents.value
                 if ll.left:
                     tracker.append(ll.left)
                     current_ll.append(ll.left.val)
@@ -651,7 +653,7 @@ class BinarySearchTree(object):
         return result
 
     def is_bst(self, tree):
-        if tree == None or (tree.left == None and tree.right == None):
+        if tree is None or (tree.left is None and tree.right is None):
             return True
 
         val = tree.val
@@ -661,7 +663,7 @@ class BinarySearchTree(object):
         return self.is_bst(tree.left) and self.is_bst(tree.right)
 
     def first_common_ancestor(self, root, t1, t2):
-        if root == None:
+        if root is None:
             return None
         if root.val > t1.val and root.val > t2.val:
             return self.first_common_ancestor(root.left, t1, t2)
@@ -682,4 +684,3 @@ class BinarySearchTree(object):
         flag2 = (self.flipEquiv(root1.left, root2.right) and self.flipEquiv(root1.right, root2.left))
 
         return flag1 or flag2
-
