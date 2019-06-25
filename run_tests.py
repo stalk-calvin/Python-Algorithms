@@ -11,6 +11,8 @@ sys.path[0:0] = [
     current_path,
     tests_path,
 ]
+additional = os.path.join(current_path, 'calvin/backtracking_dfs')
+sys.path.append(additional)
 
 def get_suite(tests):
     tests = sorted(tests)
@@ -37,5 +39,6 @@ if __name__ == '__main__':
     tests = sys.argv[1:]
     if not tests:
         tests = [f[:-3] for f in os.listdir(tests_path) if not f.startswith('__') and f.endswith(".py")]
+        tests.extend([f[:-3] for f in os.listdir(additional) if f.startswith('test') and f.endswith(".py")])
     suite = get_suite(tests)
     unittest.TextTestRunner(verbosity=2).run(suite)
