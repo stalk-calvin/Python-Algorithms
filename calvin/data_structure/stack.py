@@ -21,7 +21,8 @@ class Stack:
         return len(self.items)
 
     def __iter__(self):
-        return self
+        for x in range(self.size()):
+            yield self.pop()
 
     def __next__(self):
         if len(self.items)>0:

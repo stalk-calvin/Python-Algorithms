@@ -67,9 +67,9 @@ class StringsTest(unittest.TestCase):
         self.assertFalse(self.fixture.isIsomorphic("different", "length"))
 
     def test_find_longest_word_with_str(self):
-        input_str='cat'
+        input_str='act'
         self.assertEqual(None, self.fixture.find_longest_word_with_str(None, input_str))
-        input=['act','acquaintance', 'trace']
+        input=['act','acquaintance', 'trace', 'actor', 'tractor', 'acting']
         actual = self.fixture.find_longest_word_with_str(input, input_str)
         self.assertEqual('acquaintance', actual)
 
@@ -251,6 +251,11 @@ class StringsTest(unittest.TestCase):
         self.assertEqual('l',self.fixture.longest_recurring_substring('HELLO WORLD!'))
         self.assertEqual('er pipe',self.fixture.longest_recurring_substring('Peter piper picked a pickled pepper pipes'))
         self.assertEqual(' where she s',self.fixture.longest_recurring_substring('I saw Susie sitting in a shoe shine shop. Where she sits she shines, and where she shines she sits.'))
+
+    def test_sortLogs(self):
+        in_=["a1 9 2 3 1", "a1 act car", "a1 4 7", "a1 off key", "a1 act zoo"]
+        expected=['a1 act car', 'a1 act zoo', 'a1 off key', 'a1 9 2 3 1', 'a1 4 7']
+        self.assertEqual(expected, self.fixture.sortLogs(in_))
 
     def tearDown(self):
         del self.fixture

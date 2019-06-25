@@ -149,8 +149,8 @@ class Strings(object):
         t=dd(int)
         for x in s:
             t[x]+=1
-        for key,val in t.items():
-            if val==1:
+        for key in s:
+            if t[key]==1:
                 return key
         return -1
 
@@ -183,13 +183,14 @@ class Strings(object):
             return None
 
         t = set(input_str)
-        ms =''
+        ms = ''
         for x in input:
             # x has everything in set
+            count=False
             for c in t:
                 if c not in x:
-                    continue
-            if len(ms) < len(x):
+                    count+=True
+            if not count and len(ms) < len(x):
                 ms = x
         return ms
 
@@ -709,3 +710,9 @@ class Strings(object):
                     longest=length
                     best=sub
         return best
+
+    def sortLogs(self, logs):
+        def f(log):
+            id_, r = log.split(" ", 1)
+            return (0, r) if r[0].strip().isalpha() else (1,)
+        return sorted(logs, key=f)
