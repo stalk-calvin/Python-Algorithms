@@ -3,8 +3,9 @@ from typing import List
 class Permutation(object):
     def permute(self, nums: List[int]) -> List[List[int]]:
         def dfs(nums, permute, result):
-            if nums == 0:
+            if not nums:
                 result.append(permute)
+                return
             for j, x in enumerate(nums):
                 dfs(nums[:j] + nums[j+1:], permute + [nums[j]], result)
 
@@ -14,8 +15,9 @@ class Permutation(object):
 
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         def dfs(nums, permute, result):
-            if nums == 0:
+            if not nums:
                 result.append(permute)
+                return
             tracker = set()
             for j, x in enumerate(nums):
                 if x not in tracker:
