@@ -1,38 +1,15 @@
-sudo: required
+sudo: false
 
 language: python
 
 python:
   - 3.6
 
-notifications:
-  email:
-    recipients:
-      - stalk.calvin@gmail.com
-    on_success: change
-    on_failure: always
-
-env:
-  global:
-    - DOCKER_COMPOSE_VERSION=1.22.0
-    - JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
-    - MAVEN_OPTS="-Xmx2048m"
-    - BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-
-services:
-  - docker
-
-before_install:
-  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
-  - git checkout $BRANCH
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-
 install:
   - pip install codecov
 
 script:
-  - docker-compose build testing
-  - docker-compose run --rm testing
+  - coverage run run_tests.py
+
+after_success:
+  - codecov
